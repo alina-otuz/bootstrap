@@ -212,6 +212,12 @@ body {
     gap: 16px;
     margin-bottom: 40px;
 }
+.carousel img {
+    max-height: 550px;
+
+    width: 50;
+}
+
   
 .img-container {
     position: relative;
