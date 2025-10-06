@@ -1,0 +1,145 @@
+/* CSS Variables for Cybersport Theme Colors */
+:root {
+  --cyber-purple: #8a2db8;
+  --cyber-dark: #0b2340;
+  --cyber-muted: #55677a;
+  --cyber-card-bg: #f4f7fb;
+}
+/* Body Styling */
+body {
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
+  color: var(--f1-dark);
+}
+
+/* Custom Navigation Bar Styling */
+.navbar-custom {
+  background: linear-gradient(90deg, #ffffff, #fbfdff);
+  border-bottom: 1px solid #55677a;
+}
+
+.navbar-logo {
+  height: 50px !important;
+  width: 50px !important;
+  object-fit: contain;
+}
+
+.navbar-brand {
+  font-size: 1.25rem;
+  color: var(--cyber-dark) !important;
+}
+
+.nav-link {
+  color: var(--cyber-dark) !important;
+  font-weight: 600;
+}
+
+.nav-link:hover {
+  color: var(--cyber-purple) !important;
+}
+
+/* Sidebar Styling */
+.sidebar-section {
+  background: var(--cyber-card-bg);
+  border-radius: 8px;
+}
+
+/* Quick Stats Cards */
+.quick-stat-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(11, 35, 64, 0.06);
+}
+
+.stat-title {
+  font-size: 14px;
+  color: var(--cyber-dark);
+}
+
+.stat-value {
+  font-size: 16px;
+}
+
+/* Hero Section */
+.hero-title {
+  color: var(--cyber-purple);
+}
+
+/* Custom Text Colors */
+.text-muted-custom {
+  color: var(--cyber-muted);
+}
+
+/* Carousel Styling */
+.carousel-item img {
+  height: 500px;
+  object-fit: cover;
+}
+
+/* Card Image Styling */
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+/* Custom F1 Primary Button */
+.btn-cyber-primary {
+  background-color: var(--cyber-purple);
+  border-color: var(--cyber-purple);
+  color: white;
+}
+
+.btn-cyber-primary:hover {
+  background-color: #722499;
+  border-color: #722499;
+  color: white;
+}
+
+.btn-cyber-primary:focus,
+.btn-cyber-primary:active {
+  background-color: #8a2db8;
+  border-color: #8a2db8;
+  box-shadow: 0 0 0 0.25rem #722499(214, 40, 40, 0.5);
+}
+
+/* Form Styling */
+.form-custom {
+  border: 2px solid var(#8a2db8);
+  padding: 15px;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--cyber-purple);
+  box-shadow: 0 0 0 0.25rem 722499(214, 40, 40, 0.25);
+}
+
+.form-check-input:checked {
+  background-color: var(--cyber-purple);
+  border-color: var(--cyber-purple);
+}
+
+.form-check-input:focus {
+  border-color: var(--cyber-purpled);
+  box-shadow: 0 0 0 0.25rem 722499(214, 40, 40, 0.25);
+}
+
+/* Footer Styling */
+footer {
+  background: var(--cyber-card-bg);
+  border-top: 1px solid #eef2f5;
+  color: var(--cyber-muted);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .carousel-item img {
+    height: 300px;
+  }
+  
+  .card-img-top {
+    height: 180px;
+  }
+}
