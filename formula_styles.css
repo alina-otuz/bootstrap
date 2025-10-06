@@ -1,0 +1,148 @@
+/* CSS Variables for F1 Theme Colors */
+:root {
+  --f1-red: #d62828;
+  --f1-dark: #0b2340;
+  --f1-muted: #55677a;
+  --f1-card-bg: #f4f7fb;
+}
+
+/* Body Styling */
+body {
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
+  color: var(--f1-dark);
+}
+
+/* Custom Navigation Bar Styling */
+.navbar-custom {
+  background: linear-gradient(90deg, #ffffff, #fbfdff);
+  border-bottom: 1px solid #eef2f5;
+}
+
+.navbar-logo {
+  height: 40px !important;
+  width: 40px !important;
+  max-height: 40px !important;
+  max-width: 40px !important;
+  object-fit: contain;
+}
+
+.navbar-brand {
+  font-size: 1.25rem;
+  color: var(--f1-dark) !important;
+}
+
+.nav-link {
+  color: var(--f1-dark) !important;
+  font-weight: 600;
+}
+
+.nav-link:hover {
+  color: var(--f1-red) !important;
+}
+
+/* Sidebar Styling */
+.sidebar-section {
+  background: var(--f1-card-bg);
+  border-radius: 8px;
+}
+
+/* Quick Stats Cards */
+.quick-stat-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(11, 35, 64, 0.06);
+}
+
+.stat-title {
+  font-size: 14px;
+  color: var(--f1-dark);
+}
+
+.stat-value {
+  font-size: 16px;
+}
+
+/* Hero Section */
+.hero-title {
+  color: var(--f1-red);
+}
+
+/* Custom Text Colors */
+.text-muted-custom {
+  color: var(--f1-muted);
+}
+
+/* Carousel Styling */
+.carousel-item img {
+  height: 500px;
+  object-fit: cover;
+}
+
+/* Card Image Styling */
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+/* Custom F1 Primary Button */
+.btn-f1-primary {
+  background-color: var(--f1-red);
+  border-color: var(--f1-red);
+  color: white;
+}
+
+.btn-f1-primary:hover {
+  background-color: #b71c1c;
+  border-color: #b71c1c;
+  color: white;
+}
+
+.btn-f1-primary:focus,
+.btn-f1-primary:active {
+  background-color: #b71c1c;
+  border-color: #b71c1c;
+  box-shadow: 0 0 0 0.25rem rgba(214, 40, 40, 0.5);
+}
+
+/* Form Styling */
+.form-custom {
+  border: 2px solid var(--f1-red);
+  padding: 15px;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--f1-red);
+  box-shadow: 0 0 0 0.25rem rgba(214, 40, 40, 0.25);
+}
+
+.form-check-input:checked {
+  background-color: var(--f1-red);
+  border-color: var(--f1-red);
+}
+
+.form-check-input:focus {
+  border-color: var(--f1-red);
+  box-shadow: 0 0 0 0.25rem rgba(214, 40, 40, 0.25);
+}
+
+/* Footer Styling */
+footer {
+  background: var(--f1-card-bg);
+  border-top: 1px solid #eef2f5;
+  color: var(--f1-muted);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .carousel-item img {
+    height: 300px;
+  }
+  
+  .card-img-top {
+    height: 180px;
+  }
+}
