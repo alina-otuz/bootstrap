@@ -31,7 +31,7 @@
             <a class="nav-link" href="olympics.html">Olympics</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="formula1.html">Formula 1</a>
+            <a class="nav-link" href="sportworldsignup.html">Sign Up</a>
           </li>
         </ul>
       </div>
@@ -55,6 +55,7 @@
               <li class="mb-2 pb-2 border-bottom"><a href="#calendar" class="text-decoration-none text-muted-custom">Race Calendar</a></li>
               <li class="mb-2 pb-2 border-bottom"><a href="#gallery" class="text-decoration-none text-muted-custom">Photo Gallery</a></li>
               <li class="mb-2 pb-2"><a href="#newsletter" class="text-decoration-none text-muted-custom">Newsletter</a></li>
+              <li class="mb-2 pb-2"><a href="#faq" class="text-decoration-none text-muted-custom">Q&A</a></li>
             </ul>
           </nav>
 
@@ -231,59 +232,118 @@
         </section>
 
         <!-- Task 9: Responsive Form Design -->
-        <section id="newsletter" class="mb-5 px-2 px-sm-3">
-          <div class="row justify-content-center">
-            <div class="col-lg-6 col-md-8">
-              <h2 class="text-center fw-bold mb-3 mt-4 mt-lg-5">Get Race Notifications</h2>
-              <p class="text-center fst-italic text-muted-custom mb-4">Complete the form below and we'll notify you about Formula 1 races!</p>
-              
-              <form class="form-custom">
-                <div class="mb-3">
-                  <label for="nameInput" class="form-label fw-semibold">Name</label>
-                  <input type="text" class="form-control" id="nameInput" name="name" required aria-required="true">
-                </div>
+         <section id="newsletter" class="mb-5 px-2 px-sm-3">
+          <h2 class="text-center fw-bold mb-4 mt-4 mt-lg-5">Newsletter</h2>
+      <!-- Button to trigger the form -->
+<button id="showFormBtn" class="btn btn-f1-primary btn-lg">Subscribe</button>
+</section>
+<!-- Hidden Pop-up Form -->
+<div id="popupForm" class="popup-container">
+  <div class="popup-content">
+    <button id="closeFormBtn" class="close-btn">&times;</button>
 
-                <div class="mb-3">
-                  <label for="emailInput" class="form-label fw-semibold">Email address</label>
-                  <input type="email" class="form-control" id="emailInput" name="email" required aria-required="true" aria-describedby="emailHelp">
-                  <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-                </div>
+    <!-- Form -->
+    <h2 class="text-center fw-bold mb-3">Get Race Notifications</h2>
+    <p class="text-center fst-italic text-muted-custom mb-4">Complete the form below and we'll notify you about Formula 1 races!</p>
 
-                <div class="mb-3">
-                  <label for="teamSelect" class="form-label fw-semibold">Favorite Team</label>
-                  <select class="form-select" id="teamSelect" name="team" aria-label="Select your favorite F1 team">
-                    <option selected>Red Bull Racing</option>
-                    <option>Mercedes</option>
-                    <option>Ferrari</option>
-                    <option>McLaren</option>
-                    <option>Alpine</option>
-                    <option>Aston Martin</option>
-                    <option>Williams</option>
-                    <option>Haas</option>
-                    <option>AlphaTauri</option>
-                  </select>
-                </div>
+    <form class="form-custom">
+      <div class="mb-3">
+        <label for="nameInput" class="form-label fw-semibold">Name</label>
+        <input type="text" class="form-control" id="nameInput" name="name" required aria-required="true">
+      </div>
 
-                <div class="mb-3 form-check">
-                  <input type="checkbox" class="form-check-input" id="notificationsCheck">
-                  <label class="form-check-label" for="notificationsCheck">
-                    Send me race highlights and updates
-                  </label>
-                </div>
+      <div class="mb-3">
+        <label for="emailInput" class="form-label fw-semibold">Email address</label>
+        <input type="email" class="form-control" id="emailInput" name="email" required aria-required="true" aria-describedby="emailHelp">
+        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+      </div>
 
-                <div class="d-grid gap-2">
-                  <button type="submit" class="btn btn-f1-primary btn-lg">Subscribe Now</button>
-                  <button type="reset" class="btn btn-outline-secondary">Clear Form</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </section>
+      <div class="mb-3">
+        <label for="teamSelect" class="form-label fw-semibold">Favorite Team</label>
+        <select class="form-select" id="teamSelect" name="team" aria-label="Select your favorite F1 team">
+          <option selected>Red Bull Racing</option>
+          <option>Mercedes</option>
+          <option>Ferrari</option>
+          <option>McLaren</option>
+          <option>Alpine</option>
+          <option>Aston Martin</option>
+          <option>Williams</option>
+          <option>Haas</option>
+          <option>AlphaTauri</option>
+        </select>
+      </div>
 
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="notificationsCheck">
+        <label class="form-check-label" for="notificationsCheck">
+          Send me race highlights and updates
+        </label>
+      </div>
+
+      <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-f1-primary btn-lg">Subscribe Now</button>
+        <button type="reset" class="btn btn-outline-secondary">Clear Form</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- JavaScript to toggle the pop-up form -->
+<script>
+  // Get elements
+  const showFormBtn = document.getElementById('showFormBtn');
+  const popupForm = document.getElementById('popupForm');
+  const closeFormBtn = document.getElementById('closeFormBtn');
+
+  // Show form when button is clicked
+  showFormBtn.addEventListener('click', function() {
+    popupForm.style.display = 'flex'; // Show popup form
+  });
+
+  // Close form when close button is clicked
+  closeFormBtn.addEventListener('click', function() {
+    popupForm.style.display = 'none'; // Hide popup form
+  });
+
+  // Close form if clicked outside the form
+  window.addEventListener('click', function(event) {
+    if (event.target === popupForm) {
+      popupForm.style.display = 'none'; // Hide popup form
+    }
+  });
+</script>
       </main>
     </div>
   </div>
+  <!-- Task 2: Accordion for FAQs or Content Sections -->
+   <section id="faq" class="mb-5 px-2 px-sm-3">
+   <h2 class="text-center fw-bold mb-4 mt-4 mt-lg-5">Frequently Asked Questions</h2><br>
+<button type="button" class="collapsible">Why do F1 cars spark?</button>
+<div class="content">The answer to this question is found in the relative height of a Formula 1 car. With the floor being just millimeters off the ground, combined with the undulation and inconsistencies of the track surface, sparking is almost a given. Different factors affect the amount of sparking from an F1 car, with the most common being the fuel load. In qualifying, cars run low fuel for optimum weight and higher speeds, but on race day cars can have up to 110kg of fuel to last them the entire grand prix.
+You may have noticed planks of wood on the floor of Formula 1 cars, on the rare occasion that the underside is visible. The purpose of this ‘skid block’ is to ensure that all cars are following the ride height regulations. If the wooden plank has been worn down by more than a millimeter at the end of a race, that car will be disqualified.
+But, as expected, teams take advantage of a helpful loophole when it comes to ride height. They place pieces of titanium in strategic parts of the floor, which are designed to strike the track instead of the skid block, thus reducing the amount of wear on the plank and producing a spectacular shower of sparks.
+</div>
+<button type="button" class="collapsible">What are penalty points?</button>
+<div class="content"> Every F1 driver has a Super License, which is just like a driver’s license for the racetrack. All forms of FIA affiliated motorsport require them, to keep track of a driver’s racing details. Super Licenses include the holder’s number of penalty points, which accumulate after penalties are applied for on-track incidents. The system is identical to points on a driver’s license, where different infractions are accompanied by varying numbers of points. If a driver picks up 12 or more penalty points in the span of a year, they will earn a one race ban. Though penalty points can be controversial, they aid in the application of safety and regulations in F1.</div>
+<button type="button" class="collapsible">Can drivers listen to music during a race?</button>
+<div class="content">The short answer is no – drivers cannot listen to music while racing. While it’s true that flipping through Spotify while racing would be a nice gimmick, there’s no doubt that it would be a huge distraction for the drivers. Even though music is off the table, drivers can communicate with their engineers and the pit wall during a race. </div>
+</section>
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
 
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.maxHeight){
+      content.style.maxHeight = null;
+    } else {
+      content.style.maxHeight = content.scrollHeight + "px";
+    }
+  });
+}
+</script>
   <!-- Task 10: Accessibility - Semantic footer -->
   <footer class="py-4 mt-5">
     <div class="container-fluid">

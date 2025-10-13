@@ -104,6 +104,40 @@ body {
   box-shadow: 0 0 0 0.25rem rgba(214, 40, 40, 0.5);
 }
 
+/* Popup Form Styling */
+.popup-container {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Dark background */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it's above other content */
+}
+
+.popup-content {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  color: #333;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
 /* Form Styling */
 .form-custom {
   border: 2px solid var(--f1-red);
@@ -111,6 +145,7 @@ body {
   border-radius: 8px;
   background: white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
 .form-control:focus,
@@ -129,6 +164,7 @@ body {
   box-shadow: 0 0 0 0.25rem rgba(214, 40, 40, 0.25);
 }
 
+
 /* Footer Styling */
 footer {
   background: var(--f1-card-bg);
@@ -145,4 +181,42 @@ footer {
   .card-img-top {
     height: 180px;
   }
+}
+
+.collapsible {
+  background-color: var(--f1-red);
+  color: var(--f1-card-bg);
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: var(--f1-red);
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active, .collapsible:hover {
+  background-color: var(--f1-card-bg) ;
+color: var(--f1-red);
+}
+
+/* Style the collapsible content. Note: hidden by default */
+.content {
+  padding: 0 18px;
+  background-color: white;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+.collapsible:after {
+  content: '\02795'; /* Unicode character for "plus" sign (+) */
+  font-size: 13px;
+  color: var(--f1-card-bg);
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  content: "\2796"; /* Unicode character for "minus" sign (-) */
 }
