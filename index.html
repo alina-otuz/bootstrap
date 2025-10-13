@@ -55,8 +55,7 @@
           <h2 class="text-danger">About Sport</h2>
           <p>
             Sport has always been an integral part of human culture, serving as a way to strengthen the body and mind,
-            to build discipline, and to create unity among communities. From running and wrestling in ancient times
-            to the modern diversity of sports, physical activity has continuously motivated people to push their limits.
+            to build discipline, and to create unity among communities.
           </p>
         </section>
 
@@ -64,8 +63,7 @@
           <h2 class="text-danger">Modern Sport</h2>
           <p>
             Today, sport is a global industry worth billions of dollars, with events like the FIFA World Cup and the
-            Olympic Games uniting billions of fans around the world. Modern sport uses advanced technology,
-            broadcasting, and analytics to enhance performance and entertainment.
+            Olympic Games uniting billions of fans around the world.
           </p>
         </section>
 
@@ -109,8 +107,77 @@
     </div>
   </div>
 
+
+  <section id="register" class="p-4 bg-light rounded shadow-sm container my-5">
+    <h2 class="text-danger mb-3 text-center">Registration Form</h2>
+    <form id="registerForm" novalidate>
+      <div class="mb-3">
+        <label for="name" class="form-label fw-bold">Name:</label>
+        <input type="text" id="name" class="form-control" placeholder="Your Name">
+        <div id="nameError" class="text-danger small"></div>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label fw-bold">Email:</label>
+        <input type="email" id="email" class="form-control" placeholder="name@example.com">
+        <div id="emailError" class="text-danger small"></div>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label fw-bold">Password:</label>
+        <input type="password" id="password" class="form-control" placeholder="At least 8 characters">
+        <div id="passwordError" class="text-danger small"></div>
+      </div>
+      <div class="mb-3">
+        <label for="confirmPassword" class="form-label fw-bold">Confirm Password:</label>
+        <input type="password" id="confirmPassword" class="form-control" placeholder="Repeat password">
+        <div id="confirmError" class="text-danger small"></div>
+      </div>
+      <button type="submit" class="btn btn-danger w-100">Register</button>
+    </form>
+  </section>
+
+
+  <section id="faq" class="p-4 bg-light rounded shadow-sm container my-5">
+    <h2 class="text-danger mb-3">FAQ</h2>
+    <div class="accordion-item mb-3">
+      <h5 class="question text-primary" style="cursor:pointer;">What is Sport World?</h5>
+      <p class="answer">It’s a website about global sports trends and achievements.</p>
+    </div>
+    <div class="accordion-item mb-3">
+      <h5 class="question text-primary" style="cursor:pointer;">Who created it?</h5>
+      <p class="answer">Created by Alina Otuzbayeva and Zhanel Shunshalinova, AITU students.</p>
+    </div>
+    <div class="accordion-item mb-3">
+      <h5 class="question text-primary" style="cursor:pointer;">What can I find here?</h5>
+      <p class="answer">Information about various sports, Olympic Games, and major competitions.</p>
+    </div>
+  </section>
+
+
+  <button id="openPopup" class="btn btn-danger mx-auto d-block mb-3">Contact Us</button>
+
+  <div id="popup" class="popup">
+    <div class="popup-content">
+      <span id="closePopup" class="close">&times;</span>
+      <h4>Contact Form</h4>
+      <input type="text" placeholder="Your name" class="form-control mb-2">
+      <input type="email" placeholder="Your email" class="form-control mb-2">
+      <button class="btn btn-danger w-100">Send</button>
+    </div>
+  </div>
+
+
+  <div class="text-center mb-4">
+    <button id="changeBg" class="btn btn-outline-danger">Change Background</button>
+  </div>
+
+
   <footer class="text-center py-3 bg-light border-top">
     <p class="mb-0 text-muted">Alina Otuzbayeva (257034) | Zhanel Shunshalinova (242457)</p>
+    <p id="datetime" class="text-secondary"></p>
   </footer>
+
+
+  <script src="script1.js"></script>
+
 </body>
 </html>
