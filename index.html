@@ -12,6 +12,7 @@
 </head>
 <body>
 
+  <!-- ===== NAVBAR ===== -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <a class="navbar-brand fw-bold text-light" href="#">Sport World</a>
@@ -29,15 +30,18 @@
     </div>
   </nav>
 
+  <!-- ===== HERO SECTION ===== -->
   <section class="hero">
     <div class="hero-overlay">
       <h1>Sport World</h1>
     </div>
   </section>
 
+  <!-- ===== MAIN CONTENT ===== -->
   <div class="container my-5">
     <div class="row">
 
+      <!-- Sidebar -->
       <aside class="col-lg-3 mb-4">
         <div class="p-3 bg-light rounded shadow-sm">
           <h4 class="text-danger mb-3">Navigation</h4>
@@ -50,6 +54,7 @@
         </div>
       </aside>
 
+      <!-- Main Content -->
       <main class="col-lg-9">
         <section id="about-sport" class="mb-4 p-4 bg-light rounded shadow-sm">
           <h2 class="text-danger">About Sport</h2>
@@ -84,6 +89,7 @@
           </div>
         </section>
 
+        <!-- Carousel -->
         <div id="sportCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
           <div class="carousel-inner">
             <div class="carousel-item active">
@@ -107,35 +113,15 @@
     </div>
   </div>
 
-
+  <!-- ===== REGISTRATION FORM ===== -->
   <section id="register" class="p-4 bg-light rounded shadow-sm container my-5">
     <h2 class="text-danger mb-3 text-center">Registration Form</h2>
     <form id="registerForm" novalidate>
       <div class="mb-3">
-        <label for="name" class="form-label fw-bold">Name:</label>
-        <input type="text" id="name" class="form-control" placeholder="Your Name">
-        <div id="nameError" class="text-danger small"></div>
-      </div>
-      <div class="mb-3">
-        <label for="email" class="form-label fw-bold">Email:</label>
-        <input type="email" id="email" class="form-control" placeholder="name@example.com">
-        <div id="emailError" class="text-danger small"></div>
-      </div>
-      <div class="mb-3">
-        <label for="password" class="form-label fw-bold">Password:</label>
-        <input type="password" id="password" class="form-control" placeholder="At least 8 characters">
-        <div id="passwordError" class="text-danger small"></div>
-      </div>
-      <div class="mb-3">
-        <label for="confirmPassword" class="form-label fw-bold">Confirm Password:</label>
-        <input type="password" id="confirmPassword" class="form-control" placeholder="Repeat password">
-        <div id="confirmError" class="text-danger small"></div>
-      </div>
-      <button type="submit" class="btn btn-danger w-100">Register</button>
     </form>
   </section>
 
-
+  <!-- ===== FAQ SECTION ===== -->
   <section id="faq" class="p-4 bg-light rounded shadow-sm container my-5">
     <h2 class="text-danger mb-3">FAQ</h2>
     <div class="accordion-item mb-3">
@@ -152,30 +138,30 @@
     </div>
   </section>
 
-
+  <!-- ===== CONTACT POPUP ===== -->
   <button id="openPopup" class="btn btn-danger mx-auto d-block mb-3">Contact Us</button>
 
   <div id="popup" class="popup">
     <div class="popup-content">
       <span id="closePopup" class="close">&times;</span>
       <h4>Contact Form</h4>
-      <input type="text" placeholder="Your name" class="form-control mb-2">
-      <input type="email" placeholder="Your email" class="form-control mb-2">
+      <input type="text" id="contactName" placeholder="Your full name" class="form-control mb-2">
+      <input type="email" id="contactEmail" placeholder="Your email address" class="form-control mb-2">
+      <textarea id="contactMessage" class="form-control mb-2" placeholder="Your message"></textarea>
       <button class="btn btn-danger w-100">Send</button>
     </div>
   </div>
 
-
+  <!-- ===== CHANGE THEME BUTTON ===== -->
   <div class="text-center mb-4">
     <button id="changeBg" class="btn btn-outline-danger">Change Background</button>
   </div>
 
-
+  <!-- ===== FOOTER ===== -->
   <footer class="text-center py-3 bg-light border-top">
     <p class="mb-0 text-muted">Alina Otuzbayeva (257034) | Zhanel Shunshalinova (242457)</p>
     <p id="datetime" class="text-secondary"></p>
   </footer>
-
 
   <script src="script1.js"></script>
 
