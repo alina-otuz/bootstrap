@@ -470,38 +470,7 @@ footer {
     padding: 15px;
   }
 }
-/* horizontal scroll bar */
-.scrollBar {
-  position: fixed;
-  top: 95vh;
-  height: 2px;
-  width: 0%;
-  background: goldenrod;
-  -webkit-transition: width 200ms ease;
-  transition: width 200ms ease;
-  text-align: right;
-  color: #fff;
-}
 
-.scrollBar span {
-  position: absolute;
-  top: -23px;
-  right: 15px;
-  font-size: 0.7em;
-  font-weight: 500;
-  display: block;
-  text-align: center;
-}
-
-.scrollBar span::after {
-  content: "%";
-  font-size: 0.8em;
-  position: absolute;
-  right: -15px;
-  bottom: 4px;
-  font-weight: 700;
-  opacity: 0.4;
-}
 /* ============================================
    TASK 4: SCROLL PROGRESS BAR STYLES
    ============================================ */
