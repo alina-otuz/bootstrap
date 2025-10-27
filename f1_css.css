@@ -470,6 +470,199 @@ footer {
     padding: 15px;
   }
 }
+/* horizontal scroll bar */
+.scrollBar {
+  position: fixed;
+  top: 95vh;
+  height: 2px;
+  width: 0%;
+  background: goldenrod;
+  -webkit-transition: width 200ms ease;
+  transition: width 200ms ease;
+  text-align: right;
+  color: #fff;
+}
+
+.scrollBar span {
+  position: absolute;
+  top: -23px;
+  right: 15px;
+  font-size: 0.7em;
+  font-weight: 500;
+  display: block;
+  text-align: center;
+}
+
+.scrollBar span::after {
+  content: "%";
+  font-size: 0.8em;
+  position: absolute;
+  right: -15px;
+  bottom: 4px;
+  font-weight: 700;
+  opacity: 0.4;
+}
+/* ============================================
+   TASK 4: SCROLL PROGRESS BAR STYLES
+   ============================================ */
+.scrollBar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  width: 0%;
+  background: linear-gradient(90deg, #d62828, #ff6b6b);
+  transition: width 200ms ease;
+  text-align: right;
+  z-index: 9999;
+  box-shadow: 0 2px 4px rgba(214, 40, 40, 0.3);
+}
+
+.scrollBar span {
+  position: absolute;
+  top: 8px;
+  right: 15px;
+  font-size: 0.75em;
+  font-weight: 600;
+  display: block;
+  text-align: center;
+  background-color: #d62828;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.scrollBar span::after {
+  content: "%";
+  font-size: 0.9em;
+  margin-left: 2px;
+  font-weight: 700;
+}
+
+/* Dark mode scrollbar */
+body.dark-mode .scrollBar {
+  background: linear-gradient(90deg, #ff6b6b, #d62828);
+}
+
+body.dark-mode .scrollBar span {
+  background-color: #ff6b6b;
+}
+
+/* ============================================
+   TASK 8: COPY BUTTON STYLES
+   ============================================ */
+.copy-btn {
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+  border-radius: 6px;
+  padding: 5px 12px;
+}
+
+.copy-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.copy-btn.btn-success {
+  animation: successPulse 0.5s ease;
+}
+
+@keyframes successPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* ============================================
+   TASK 9: LAZY LOADING IMAGE STYLES
+   ============================================ */
+.lazy-load {
+  opacity: 0.5;
+  transition: opacity 0.5s ease;
+  filter: blur(5px);
+}
+
+.lazy-load:not([data-src]) {
+  opacity: 1;
+  filter: none;
+}
+
+/* Smooth fade-in when image loads */
+.carousel-item img:not(.lazy-load) {
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0.5;
+    filter: blur(5px);
+  }
+  to {
+    opacity: 1;
+    filter: none;
+  }
+}
+
+/* ============================================
+   TASK 6: LOADING SPINNER STYLES
+   ============================================ */
+.spinner-border {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  vertical-align: -0.125em;
+  border: 0.15em solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spinner-border 0.75s linear infinite;
+}
+
+.spinner-border-sm {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-width: 0.1em;
+}
+
+@keyframes spinner-border {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Button disabled state during loading */
+button[disabled] {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Loading state animation */
+.form-custom button[type="submit"][disabled] {
+  background-color: var(--f1-muted);
+  border-color: var(--f1-muted);
+  position: relative;
+  overflow: hidden;
+}
+
+.form-custom button[type="submit"][disabled]::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  to {
+    left: 100%;
+  }
+}
 
 @media (max-width: 576px) {
   .hero-title {
@@ -482,5 +675,20 @@ footer {
   
   .carousel-item img {
     height: 200px;
+  }
+  .scrollBar {
+    height: 3px;
+  }
+  
+  .scrollBar span {
+    font-size: 0.65em;
+    padding: 3px 8px;
+    top: 6px;
+    right: 10px;
+  }
+  
+  .copy-btn {
+    font-size: 0.75rem;
+    padding: 4px 10px;
   }
 }

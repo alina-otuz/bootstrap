@@ -1,152 +1,198 @@
-// ===== FAQ раскрытие ответов =====
-document.querySelectorAll(".question").forEach(q => {
-  q.addEventListener("click", () => q.nextElementSibling.classList.toggle("show"));
-});
+// ===== jQuery READY =====
+$(document).ready(function () {
+  console.log("jQuery is ready!");
 
-// ===== Popup форма =====
-const popup = document.getElementById("popup");
-const openPopup = document.getElementById("openPopup");
-const closePopup = document.getElementById("closePopup");
-
-if (popup && openPopup && closePopup) {
-  openPopup.onclick = () => (popup.style.display = "block");
-  closePopup.onclick = () => (popup.style.display = "none");
-  window.onclick = (e) => { if (e.target === popup) popup.style.display = "none"; };
-}
-
-// ===== Часы (реальное время) =====
-const dateBlock = document.getElementById("datetime");
-if (dateBlock) {
-  const updateTime = () => {
-    const now = new Date();
-    dateBlock.textContent = now.toLocaleString("en-US", {
-      weekday: "long", year: "numeric", month: "long", day: "numeric",
-      hour: "2-digit", minute: "2-digit", second: "2-digit"
-    });
-  };
-  updateTime();
-  setInterval(updateTime, 1000);
-}
-
-// ===== Переключатель день/ночь (Dynamic Style Changes) =====
-const themeToggle = document.createElement('button');
-themeToggle.textContent = '🌞 / 🌙';
-themeToggle.id = 'themeToggle';
-Object.assign(themeToggle.style, {
-  position: 'fixed', bottom: '20px', right: '20px',
-  padding: '10px 14px', border: 'none', borderRadius: '50%',
-  fontSize: '20px', cursor: 'pointer',
-  background: '#d62828', color: 'white', transition: 'all 0.6s ease'
-});
-document.body.appendChild(themeToggle);
-
-themeToggle.addEventListener('click', () => {
-  document.body.classList.toggle('dark-mode');
-  themeToggle.style.transform = 'rotate(360deg)';
-  setTimeout(() => (themeToggle.style.transform = ''), 600);
-});
-
-// ===== Темная тема (динамически в DOM) =====
-const themeStyle = document.createElement('style');
-themeStyle.textContent = `
-  body.dark-mode {
-    background-color: #121212 !important;
-    color: #f5f5f5 !important;
-    transition: background-color 0.6s, color 0.6s;
-  }
-  body.dark-mode .bg-light,
-  body.dark-mode .card,
-  body.dark-mode .p-3,
-  body.dark-mode .shadow-sm {
-    background-color: #1e1e1e !important;
-    color: #f5f5f5 !important;
-  }
-`;
-document.head.appendChild(themeStyle);
-
-// ===== Многошаговая форма с аудиоэффектами =====
-const registerForm = document.getElementById("registerForm");
-const successSound = new Audio('success.mp3');
-const errorSound = new Audio('error.mp3');
-
-if (registerForm) {
-  registerForm.innerHTML = `
-    <div class="form-step active">
-      <label>Name:</label>
-      <input type="text" id="stepName" class="form-control" placeholder="Your name">
-      <button type="button" class="next btn btn-danger mt-3 w-100">Next</button>
-    </div>
-    <div class="form-step">
-      <label>Email:</label>
-      <input type="email" id="stepEmail" class="form-control" placeholder="example@mail.com">
-      <div class="d-flex mt-3 gap-2">
-        <button type="button" class="back btn btn-secondary w-50">Back</button>
-        <button type="button" class="next btn btn-danger w-50">Next</button>
-      </div>
-    </div>
-    <div class="form-step">
-      <label>Password:</label>
-      <input type="password" id="stepPass" class="form-control" placeholder="******">
-      <div class="d-flex mt-3 gap-2">
-        <button type="button" class="back btn btn-secondary w-50">Back</button>
-        <button type="submit" class="btn btn-success w-50">Submit</button>
-      </div>
-    </div>
-  `;
-
-  const steps = registerForm.querySelectorAll('.form-step');
-  let current = 0;
-
-  const showStep = (i) => {
-    steps.forEach((s, idx) => {
-      s.classList.toggle('active', idx === i);
-      s.style.display = idx === i ? 'block' : 'none';
-    });
-  };
-  showStep(current);
-
-  registerForm.addEventListener('click', e => {
-    if (e.target.classList.contains('next')) {
-      current = Math.min(current + 1, steps.length - 1);
-      showStep(current);
-    } else if (e.target.classList.contains('back')) {
-      current = Math.max(current - 1, 0);
-      showStep(current);
-    }
+  // ===== Scroll Progress Bar =====
+  $(window).on("scroll", function () {
+    let scrollTop = $(window).scrollTop();
+    let docHeight = $(document).height() - $(window).height();
+    let scrollPercent = (scrollTop / docHeight) * 100;
+    $("#scrollBar").css("width", scrollPercent + "%");
   });
 
-  registerForm.addEventListener('submit', e => {
-    e.preventDefault();
-    const name = document.getElementById("stepName").value.trim();
-    const email = document.getElementById("stepEmail").value.trim();
-    const pass = document.getElementById("stepPass").value.trim();
+  // ===== FAQ Toggle =====
+  $(".question").on("click", function () {
+    $(this).next(".answer").toggleClass("show");
+    $(this).parent().toggleClass("open");
+  });
 
-    if (!name || !email || !pass) {
-      alert("⚠️ Please fill all fields.");
-      errorSound.currentTime = 0;
-      errorSound.play(); // 🔴 ошибка
+  // ===== Multi-step Form =====
+  let currentStep = 0;
+  const steps = $(".form-step");
+
+  $(".next").click(function () {
+    steps.eq(currentStep).removeClass("active");
+    currentStep = Math.min(currentStep + 1, steps.length - 1);
+    steps.eq(currentStep).addClass("active");
+  });
+
+  $(".prev").click(function () {
+    steps.eq(currentStep).removeClass("active");
+    currentStep = Math.max(currentStep - 1, 0);
+    steps.eq(currentStep).addClass("active");
+  });
+
+  // ===== REGISTRATION FORM WITH SUCCESS + ERROR SOUNDS =====
+  $("#registerForm").on("submit", function (e) {
+    e.preventDefault();
+    const btn = $(this).find("button[type=submit]");
+    const originalText = btn.text();
+
+    const name = $("#name").val().trim();
+    const age = $("#age").val().trim();
+    const email = $("#email").val().trim();
+    const phone = $("#phone").val().trim();
+
+    // Проверка заполнения
+    if (!name || !age || !email || !phone) {
+      showToast("⚠️ Please fill in all fields before submitting.");
+      playSound("error.mp3");
       return;
     }
 
-    alert(`✅ Welcome, ${name}! Registration successful.`);
-    successSound.currentTime = 0;
-    successSound.play(); // 🟢 успех
-    registerForm.reset();
-    current = 0;
-    showStep(0);
+    // Эффект загрузки
+    btn.prop("disabled", true).html('<span class="spinner-border spinner-border-sm"></span> Please wait…');
+
+    // Проигрываем звук успеха сразу
+    playSound("success.mp3");
+
+    setTimeout(() => {
+      btn.prop("disabled", false).text(originalText);
+      showToast("✅ Registration successful!");
+    }, 1500);
   });
-}
 
-// ===== Навигация с помощью клавиатуры (Keyboard Event Handling) =====
-const menuItems = document.querySelectorAll('.nav-link');
-let navIndex = 0;
+  // ===== Copy to Clipboard =====
+  $("#copyBtn").on("click", function () {
+    const text = $("#copyText").text();
+    navigator.clipboard.writeText(text).then(() => {
+      $(this).text("Copied ✅");
+      showToast("Text copied to clipboard!");
+      playSound("success.mp3");
+      setTimeout(() => $(this).text("Copy"), 2000);
+    });
+  });
 
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowRight') {
-    navIndex = (navIndex + 1) % menuItems.length;
-  } else if (e.key === 'ArrowLeft') {
-    navIndex = (navIndex - 1 + menuItems.length) % menuItems.length;
-  } else return;
+  // ===== Contact Popup =====
+  $("#openPopup").click(() => $("#popup").fadeIn());
+  $("#closePopup").click(() => $("#popup").fadeOut());
+  $(window).click((e) => {
+    if ($(e.target).is("#popup")) $("#popup").fadeOut();
+  });
 
-  menuItems[navIndex].focus();
+  // ===== CONTACT FORM (POPUP) WITH SOUNDS =====
+  $("#contactForm").on("submit", function (e) {
+    e.preventDefault();
+    const btn = $(this).find("button[type=submit]");
+    const name = $("#contactName").val().trim();
+    const email = $("#contactEmail").val().trim();
+    const msg = $("#contactMessage").val().trim();
+
+    // Проверка
+    if (!name || !email || !msg) {
+      showToast("⚠️ Please fill in all fields before sending.");
+      playSound("error.mp3");
+      return;
+    }
+
+    btn.prop("disabled", true).html('<span class="spinner-border spinner-border-sm"></span> Sending…');
+    playSound("success.mp3");
+
+    setTimeout(() => {
+      btn.prop("disabled", false).text("Send");
+      showToast("📧 Message sent successfully!");
+      $("#popup").fadeOut();
+    }, 1500);
+  });
+
+  // ===== Live Search in FAQ =====
+  $("#faqSearch").on("keyup", function () {
+    const value = $(this).val().toLowerCase();
+    $(".faq-item, .accordion-item").filter(function () {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+    });
+
+    $("mark").contents().unwrap();
+    if (value) {
+      $(".question, .answer").each(function () {
+        const regex = new RegExp("(" + value + ")", "gi");
+        $(this).html($(this).text().replace(regex, "<mark>$1</mark>"));
+      });
+    }
+  });
+
+  // ===== Animated Number Counter =====
+  $(".counter").each(function () {
+    let $this = $(this);
+    let target = +$this.data("target");
+    $({ countNum: 0 }).animate(
+      { countNum: target },
+      {
+        duration: 2000,
+        easing: "swing",
+        step: function () {
+          $this.text(Math.floor(this.countNum));
+        },
+        complete: function () {
+          $this.text(this.countNum);
+        },
+      }
+    );
+  });
+
+  // ===== Lazy Loading for Images =====
+  const lazyImages = $(".lazy");
+  const lazyLoad = () => {
+    const windowBottom = $(window).scrollTop() + $(window).height();
+    lazyImages.each(function () {
+      const imgTop = $(this).offset().top;
+      if (imgTop < windowBottom + 200 && !$(this).attr("src")) {
+        $(this).attr("src", $(this).data("src"));
+      }
+    });
+  };
+  $(window).on("scroll", lazyLoad);
+  lazyLoad();
+
+  // ===== Toast Notification Function =====
+  function showToast(message) {
+    let toast = $('<div class="toast-message"></div>').text(message);
+    $("body").append(toast);
+    toast.fadeIn(300);
+    setTimeout(() => toast.fadeOut(400, () => toast.remove()), 2000);
+  }
+
+  // ===== Play Sound Function =====
+  function playSound(file) {
+    try {
+      const audio = new Audio(file);
+      audio.volume = 0.8;
+      audio.play().catch((err) => {
+        console.warn("Audio blocked by browser:", err);
+      });
+    } catch (err) {
+      console.error("Sound error:", err);
+    }
+  }
+
+  // ===== THEME TOGGLE (Dark / Light) =====
+  if (localStorage.getItem("theme") === "dark") {
+    $("body").addClass("dark-mode");
+    $("#changeBg").text("Switch to Light Mode");
+  }
+
+  $("#changeBg").on("click", function () {
+    $("body").toggleClass("dark-mode");
+    let theme = $("body").hasClass("dark-mode") ? "dark" : "light";
+    localStorage.setItem("theme", theme);
+    $(this).text(theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode");
+  });
+
+  // ===== Real-time DateTime =====
+  function updateTime() {
+    const now = new Date();
+    $("#datetime").text(now.toLocaleString());
+  }
+  updateTime();
+  setInterval(updateTime, 1000);
 });

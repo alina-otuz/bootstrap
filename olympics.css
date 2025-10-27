@@ -6,320 +6,243 @@
   --card: #f4f7fb;
 }
 
-/* === RESET === */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* === BASE === */
 body {
   font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
   background: var(--bg);
   color: var(--text);
   line-height: 1.5;
   min-height: 100vh;
-  transition: background-color 0.6s ease, color 0.6s ease;
+  transition: background 0.4s ease, color 0.4s ease;
 }
 
-/* === PAGE GRID === */
-.page-grid {
-  display: grid;
-  grid-template-columns: 250px 1fr;
-  grid-template-rows: auto 1fr auto;
-  grid-template-areas:
-    "header header"
-    "sidebar main"
-    "footer footer";
-  min-height: 100vh;
-}
-
-/* === NAVBAR === */
-.nav {
-  grid-area: header;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 12px 20px;
-  border-bottom: 1px solid #eef2f5;
-  background: linear-gradient(90deg, #ffffff, #fbfdff);
-}
-.nav h1 {
-  margin-bottom: 8px;
-  font-size: 24px;
-  color: var(--accent);
-}
-.nav nav {
+/* === HERO === */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  background: url("https://sport.insure/upload/iblock/c32/c320ad32a37a60e9e90c1782c94cb2c2.jpg") no-repeat center center/cover;
   display: flex;
   justify-content: center;
-  gap: 20px;
-}
-.nav nav a {
-  font-weight: 600;
-  font-size: 15px;
-  color: var(--text);
-  text-decoration: none;
-}
-.nav nav a:hover {
-  color: var(--accent);
+  align-items: center;
 }
 
-/* === SIDEBAR === */
-.sidebar {
-  grid-area: sidebar;
-  background: var(--card);
-  padding: 20px;
-  border-right: 1px solid #eef2f5;
-  overflow-y: auto;
-}
-.sidebar h3 {
-  margin-bottom: 16px;
-  color: var(--accent);
-  font-size: 18px;
-}
-.sidebar ul {
-  list-style: none;
-  margin-bottom: 24px;
-}
-.sidebar li {
-  padding: 8px 0;
-  border-bottom: 1px solid #eef2f5;
-  color: var(--muted);
-  font-size: 14px;
-}
-.sidebar a {
-  color: var(--muted);
-  text-decoration: none;
-}
-.sidebar a:hover {
-  color: var(--accent);
-}
-
-/* === MAIN CONTENT === */
-.container {
-  grid-area: main;
-  padding: 28px 16px;
-}
-
-/* === QUICK STATS === */
-.quick-stats {
-  background: #fff;
-  padding: 14px;
-  border-radius: 10px;
-  margin-bottom: 18px;
-  box-shadow: 0 4px 10px rgba(11, 35, 64, 0.06);
-  border-left: 4px solid var(--accent);
-}
-.quick-stats h4 {
-  margin-bottom: 6px;
-  color: var(--text);
-  font-size: 14px;
-  font-weight: 600;
-}
-.quick-stats p {
-  margin-bottom: 4px;
-  color: var(--accent);
-  font-weight: 600;
-  font-size: 15px;
-}
-.quick-stats small {
-  color: var(--muted);
-  font-size: 12px;
-}
-
-/* === GALLERY === */
-#olympic-gallery h2 {
-  font-size: 24px;
-  color: var(--accent);
-  margin-bottom: 20px;
-  text-align: center;
-}
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-bottom: 40px;
-}
-.img-container {
-  position: relative;
-  overflow: hidden;
+.hero-overlay {
+  background: rgba(0, 0, 0, 0.4);
+  padding: 20px 40px;
   border-radius: 10px;
 }
-.img-container img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-.img-container:hover img {
-  transform: scale(1.05);
-}
-.img-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  color: white;
-  padding: 10px;
-  text-align: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-.img-container:hover .img-overlay {
-  opacity: 1;
-}
 
-/* === CAROUSEL FIX === */
-.carousel img {
-  max-height: 550px;
-  width: 100%;
+.hero-overlay h1 {
+  color: #fff;
+  font-size: 64px;
+  font-weight: 700;
+  text-align: center;
 }
 
 /* === POPUP === */
 .popup {
   display: none;
   position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  z-index: 1000;
+  z-index: 999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.5);
 }
+
 .popup-content {
-  background: white;
+  background: #fff;
   margin: 10% auto;
-  padding: 20px;
-  border-radius: 10px;
-  width: 300px;
-  text-align: center;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  padding: 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  position: relative;
 }
+
 .close {
-  float: right;
-  cursor: pointer;
+  position: absolute;
+  top: 12px;
+  right: 18px;
   font-size: 22px;
-  color: var(--accent);
-}
-.close:hover {
-  color: #b71c1c;
-}
-
-/* === FAQ === */
-.answer {
-  display: none;
-  color: #333;
-  margin-top: 5px;
-}
-.answer.show {
-  display: block;
-}
-
-/* === MULTI-STEP FORM === */
-.form-step {
-  display: none;
-  animation: fade 0.5s ease;
-}
-.form-step.active {
-  display: block;
-}
-@keyframes fade {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  font-weight: bold;
+  cursor: pointer;
 }
 
 /* === FOOTER === */
-.footer {
-  grid-area: footer;
-  padding: 18px;
+footer {
+  background: #0b2340;
+  color: #fff;
   text-align: center;
-  color: var(--muted);
-  font-size: 14px;
-  border-top: 1px solid #eef2f5;
-  background: var(--card);
+  padding: 25px 0;
+  margin-top: 50px;
 }
 
-/* === DARK MODE (единая версия) === */
+/* === DARK MODE === */
 body.dark-mode {
-  background-color: #121212 !important;
-  color: #e6e6e6 !important;
-}
-body.dark-mode section,
-body.dark-mode .bg-light,
-body.dark-mode .card,
-body.dark-mode .p-3,
-body.dark-mode .p-4,
-body.dark-mode .shadow-sm {
-  background-color: #1c1c1c !important;
-  color: #e6e6e6 !important;
-  border-color: #2e2e2e !important;
-}
-body.dark-mode .sidebar {
-  background-color: #1a1a1a !important;
-  color: #d3d3d3 !important;
-}
-body.dark-mode .sidebar a {
-  color: #bfbfbf !important;
-}
-body.dark-mode .sidebar a:hover {
-  color: #ffffff !important;
-}
-body.dark-mode h1,
-body.dark-mode h2,
-body.dark-mode h3,
-body.dark-mode h4 {
-  color: #ff6b6b !important;
-}
-body.dark-mode input,
-body.dark-mode textarea,
-body.dark-mode select {
-  background-color: #2a2a2a !important;
-  color: #f1f1f1 !important;
-  border: 1px solid #3a3a3a !important;
-}
-body.dark-mode .btn-danger {
-  background-color: #d62828 !important;
-  border: none !important;
-}
-body.dark-mode .btn-outline-danger {
-  color: #ff6b6b !important;
-  border-color: #ff6b6b !important;
-}
-body.dark-mode .btn-outline-danger:hover {
-  background-color: #ff6b6b !important;
-  color: #121212 !important;
-}
-body.dark-mode footer {
-  background-color: #1c1c1c !important;
-  color: #a8a8a8 !important;
-  border-top: 1px solid #2e2e2e !important;
+  --bg: #0b2340;
+  --text: #ffffff;
+  --card: #1e2d48;
 }
 
-/* === RESPONSIVE === */
-@media (max-width: 768px) {
-  .page-grid {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "header"
-      "main"
-      "sidebar"
-      "footer";
-  }
-  .sidebar {
-    border-right: none;
-    border-top: 1px solid #eef2f5;
-  }
-  .gallery {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .img-container img {
-    height: 150px;
-  }
+/* === MEDAL COUNTERS === */
+.counter {
+  color: #d62828;
+  font-weight: 700;
+  font-size: 2.2rem;
+  transition: all 0.3s ease;
 }
-@media (max-width: 480px) {
-  .gallery {
-    grid-template-columns: 1fr;
-  }
-  .img-container img {
-    height: 120px;
-  }
+.counter:hover {
+  transform: scale(1.1);
+  color: #a51c1c;
+}
+
+/* === FAQ IMPROVED DESIGN === */
+.faq-item {
+  background: var(--card);
+  border-left: 6px solid var(--accent);
+  border-radius: 12px;
+  padding: 18px 22px;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.faq-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.faq-item .question {
+  font-weight: 700;
+  color: #0b2340;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: color 0.3s ease;
+}
+
+.faq-item .question:hover {
+  color: var(--accent);
+}
+
+.faq-item .answer {
+  margin-top: 10px;
+  color: #333;
+  display: none;
+  line-height: 1.5;
+}
+
+.faq-item .answer.show {
+  display: block;
+}
+
+.faq-item .question::after {
+  content: "+";
+  font-weight: bold;
+  color: var(--accent);
+  font-size: 20px;
+  margin-left: 10px;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.faq-item.open .question::after {
+  content: "–";
+  transform: rotate(180deg);
+  color: #000;
+}
+
+/* === SCROLL BAR === */
+#scrollBar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 5px;
+  background-color: var(--accent);
+  width: 0%;
+  z-index: 9999;
+  transition: width 0.25s ease;
+}
+
+/* === LAZY IMAGES === */
+.lazy {
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+}
+.lazy[src] {
+  opacity: 1;
+}
+/* === GALLERY IMAGE UNIFICATION === */
+.row.g-3 img {
+  width: 100%;
+  height: 250px;           
+  object-fit: cover;      
+  border-radius: 12px;     
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.row.g-3 img:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+/* ===== AUTOCOMPLETE ===== */
+#suggestions {
+  position: absolute;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 100%;
+  max-width: 480px;
+  margin-top: 4px;
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+#suggestions li {
+  list-style: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  color: #0b2340;
+}
+#suggestions li:hover {
+  background: #f8d7da;
+}
+
+/* ===== SEARCH HIGHLIGHT ===== */
+mark {
+  background: #ffed66;
+  padding: 0 3px;
+  border-radius: 2px;
+}
+
+/* ===== TOAST NOTIFICATIONS ===== */
+.toast-message {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #28a745;
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  display: none;
+  font-weight: 500;
+}
+
+/* ===== SPINNER BUTTON ===== */
+button:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+/* ===== FAQ QUESTIONS (for highlighting) ===== */
+.faq-item .question mark {
+  background: #ffd6d6;
 }

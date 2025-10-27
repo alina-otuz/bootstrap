@@ -749,8 +749,182 @@ for (i = 0; i < coll.length; i++) {
     }
   });
 }
-const clickSound = new Audio('sounds/click.mp3');
-const closeSound = new Audio('sounds/close.mp3');
+// ============================================
+// TASK 4: COLORFUL SCROLL PROGRESS BAR
+// ============================================
+$(document).scroll(function () {
+  var scrollAmount = $(window).scrollTop();
+  var documentHeight = $(document).height();
+  var windowHeight = $(window).height();
+  var scrollPercent = (scrollAmount / (documentHeight - windowHeight)) * 100;
+  var roundScroll = Math.round(scrollPercent);
+  
+  // Update progress bar width and text
+  $(".scrollBar").css("width", scrollPercent + "%");
+  $(".scrollBar span").text(roundScroll);
+});
+
+// ============================================
+// TASK 8: COPIED TO CLIPBOARD BUTTON
+// ============================================
+$(document).ready(function() {
+  // Add copy buttons to FAQ content
+  $('.content').each(function(index) {
+    const content = $(this);
+    const copyBtn = $('<button class="copy-btn btn btn-sm btn-outline-secondary mt-2">📋 Copy</button>');
+    content.append(copyBtn);
+    
+    copyBtn.on('click', function(e) {
+      e.stopPropagation();
+      const textToCopy = content.clone().find('.copy-btn').remove().end().text().trim();
+      
+      // Create temporary textarea for copying
+      const $temp = $('<textarea>');
+      $('body').append($temp);
+      $temp.val(textToCopy).select();
+      document.execCommand('copy');
+      $temp.remove();
+      
+      // Change button appearance
+      copyBtn.html('✓ Copied!').removeClass('btn-outline-secondary').addClass('btn-success');
+      
+      // Show tooltip
+      copyBtn.attr('title', 'Copied to clipboard!');
+      
+      // Reset after 2 seconds
+      setTimeout(function() {
+        copyBtn.html('📋 Copy').removeClass('btn-success').addClass('btn-outline-secondary');
+        copyBtn.removeAttr('title');
+      }, 2000);
+    });
+  });
+  
+  // Also handle actual copy events
+  $('.content').on('copy', function() {
+    console.log('Text copied from FAQ section');
+  });
+});
+
+// ============================================
+// TASK 9: IMAGE LAZY LOADING
+// ============================================
+$(document).ready(function() {
+  // Add lazy loading to carousel images
+  $('.carousel-item img').each(function() {
+    const $img = $(this);
+    const actualSrc = $img.attr('src');
+    
+    // Store actual src in data attribute and replace with placeholder
+    $img.attr('data-src', actualSrc);
+    $img.attr('src', 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="500"%3E%3Crect width="800" height="500" fill="%23f4f7fb"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="24" fill="%2355677a"%3ELoading...%3C/text%3E%3C/svg%3E');
+    $img.addClass('lazy-load');
+  });
+  
+  // Function to load images when in viewport
+  function lazyLoadImages() {
+    $('.lazy-load').each(function() {
+      const $img = $(this);
+      const imgTop = $img.offset().top;
+      const imgBottom = imgTop + $img.height();
+      const viewportTop = $(window).scrollTop();
+      const viewportBottom = viewportTop + $(window).height();
+      
+      // Check if image is in viewport (with 200px buffer)
+      if (imgBottom > viewportTop - 200 && imgTop < viewportBottom + 200) {
+        const actualSrc = $img.attr('data-src');
+        if (actualSrc && $img.attr('src') !== actualSrc) {
+          $img.attr('src', actualSrc);
+          $img.removeClass('lazy-load');
+          console.log('Lazy loaded image:', actualSrc);
+        }
+      }
+    });
+  }
+  
+  // Load images on scroll
+  $(window).on('scroll', lazyLoadImages);
+  
+  // Load images on carousel slide
+  $('#f1Carousel').on('slide.bs.carousel', function() {
+    setTimeout(lazyLoadImages, 100);
+  });
+  
+  // Initial load for images already in viewport
+  lazyLoadImages();
+});
+
+// ============================================
+// TASK 6: LOADING SPINNER ON SUBMIT
+// ============================================
+$(document).ready(function() {
+  $('.form-custom').on('submit', function(e) {
+    e.preventDefault();
+    
+    const $form = $(this);
+    const $submitBtn = $form.find('button[type="submit"]');
+    const originalText = $submitBtn.html();
+    
+    // Disable button and show spinner
+    $submitBtn.prop('disabled', true);
+    $submitBtn.html('<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Please wait...');
+    
+    // Simulate server call (2 seconds)
+    setTimeout(function() {
+      // Play success sound
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
+      oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1);
+      oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2);
+      
+      gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+      
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + 0.3);
+      
+      // Show success message
+      alert('✅ Successfully subscribed to F1 notifications!');
+      
+      // Reset button
+      $submitBtn.html(originalText);
+      $submitBtn.prop('disabled', false);
+      
+      // Close popup
+      $('#popupForm').css('display', 'none');
+      
+      // Reset form
+      $form[0].reset();
+    }, 2000);
+  });
+});
+
+// ============================================
+// POPUP FORM HANDLING
+// ============================================
+$(document).ready(function() {
+  $('#showFormBtn').on('click', function() {
+    $('#popupForm').css('display', 'flex');
+  });
+  
+  $('#closeFormBtn').on('click', function() {
+    $('#popupForm').css('display', 'none');
+  });
+  
+  // Close on outside click
+  $('#popupForm').on('click', function(e) {
+    if ($(e.target).is('#popupForm')) {
+      $(this).css('display', 'none');
+    }
+  });
+});
+
 console.log('F1 JavaScript loaded successfully!');
 console.log('Championship Teams:', championshipTeams);
 console.log('Total Championships:', totalChampionships);
