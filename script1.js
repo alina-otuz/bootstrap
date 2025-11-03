@@ -196,3 +196,84 @@ $(document).ready(function () {
   updateTime();
   setInterval(updateTime, 1000);
 });
+
+// Rating System - Select and manipulate star elements
+const starContainer = document.querySelector('#rating-stars');
+if (starContainer) {
+  const stars = starContainer.querySelectorAll('.star');
+  let currentRating = 0;
+
+  stars.forEach((star, index) => {
+    star.addEventListener('click', () => {
+      currentRating = index + 1;
+      updateStars(currentRating);
+      updateRatingMessage(currentRating);
+    });
+
+    star.addEventListener('mouseenter', () => {
+      updateStars(index + 1);
+    });
+  });
+
+  starContainer.addEventListener('mouseleave', () => {
+    updateStars(currentRating);
+  });
+
+  function updateStars(rating) {
+    stars.forEach((star, index) => {
+      if (index < rating) {
+        star.style.color = '#d62828';
+        star.textContent = '★';
+      } else {
+        star.style.color = '#ddd';
+        star.textContent = '☆';
+      }
+    });
+  }
+}
+
+// Dynamic Content Update - Modify textContent based on interactions
+function updateRatingMessage(rating) {
+  const messageElement = document.querySelector('#rating-message');
+  if (messageElement) {
+    const messages = [
+      'Please rate your experience!',
+      'Not great, but thanks for your feedback!',
+      'Could be better. We\'ll work on it!',
+      'Good! We appreciate your feedback!',
+      'Great! Glad you enjoyed it!',
+      'Excellent! We love you!'
+    ];
+    messageElement.textContent = messages[rating];
+  }
+}
+
+// Reset Button - Clear all form inputs
+const resetButton = document.querySelector('#reset-form-btn');
+if (resetButton) {
+  resetButton.addEventListener('click', () => {
+    document.querySelectorAll('input, select, textarea').forEach(input => {
+      if (input.type === 'checkbox' || input.type === 'radio') {
+        input.checked = false;
+      } else {
+        input.value = '';
+      }
+    });
+    
+    // Reset rating stars
+    if (starContainer) {
+      const stars = starContainer.querySelectorAll('.star');
+      stars.forEach(star => {
+        star.style.color = '#ddd';
+        star.textContent = '☆';
+      });
+      currentRating = 0;
+    }
+    
+    // Update message
+    const messageElement = document.querySelector('#rating-message');
+    if (messageElement) {
+      messageElement.textContent = 'Form reset successfully!';
+    }
+  });
+}

@@ -1,0 +1,50 @@
+{
+  "en": {
+    "main_page": "Main Page",
+    "olympics": "Olympics",
+    "formula1": "Formula 1",
+    "quick_navigation": "Quick Navigation",
+    "about_esports": "About Esports",
+    "popular_games": "Popular Games",
+    "tournaments": "Tournaments",
+    "gallery": "Gaming Gallery",
+    "active_players": "Active Players",
+    "top_player": "Top-Earning Player",
+    "most_viewed": "Most Viewed eSports Tournament",
+    "hero_title": "Cybersport – Digital Competition",
+    "hero_text": "Esports is competitive video gaming at the highest level. Discover the world of professional gaming below.",
+    "footer": "Alina Otuzbayeva | Zhanel Shunshalinova"
+  },
+  "ru": {
+    "main_page": "Главная страница",
+    "olympics": "Олимпийские игры",
+    "formula1": "Формула 1",
+    "quick_navigation": "Быстрая навигация",
+    "about_esports": "О киберспорте",
+    "popular_games": "Популярные игры",
+    "tournaments": "Турниры",
+    "gallery": "Галерея",
+    "active_players": "Активные игроки",
+    "top_player": "Лучший игрок по доходам",
+    "most_viewed": "Самый популярный турнир",
+    "hero_title": "Киберспорт – цифровое соперничество",
+    "hero_text": "Киберспорт — это соревновательные видеоигры на высшем уровне. Открой для себя мир профессионального гейминга.",
+    "footer": "Алина Отузбаева | Жанель Шуншалинова"
+  },
+  "kz": {
+    "main_page": "Басты бет",
+    "olympics": "Олимпиада",
+    "formula1": "Формула 1",
+    "quick_navigation": "Жылдам навигация",
+    "about_esports": "Киберспорт туралы",
+    "popular_games": "Танымал ойындар",
+    "tournaments": "Турнирлер",
+    "gallery": "Галерея",
+    "active_players": "Белсенді ойыншылар",
+    "top_player": "Ең табысты ойыншы",
+    "most_viewed": "Ең көп қаралған турнир",
+    "hero_title": "Киберспорт – Цифрлық жарыс",
+    "hero_text": "Киберспорт — жоғары деңгейдегі бейнеойын жарысы. Төменде кәсіби гейминг әлемімен таныс.",
+    "footer": "Алина Отузбаева | Жанель Шуншалинова"
+  }
+}

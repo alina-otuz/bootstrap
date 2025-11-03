@@ -39,7 +39,7 @@ body {
   position: relative;
   width: 100%;
   height: 400px;
-  background: url("https://www.gov.kz/uploads/2020/1/15/9892a20eaf5887a597319cee411c5f03_original.256187.jpg")
+  background: url("https://images.unsplash.com/photo-1567660444666-aed93ec8aa57?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1933")
     no-repeat center center/cover;
   display: flex;
   justify-content: center;
@@ -239,4 +239,18 @@ button:disabled {
 /* ===== FAQ QUESTIONS (for highlighting) ===== */
 .faq-item .question mark {
   background: #ffd6d6;
+}
+
+/* Rating Stars */
+.star {
+  font-size: 2rem;
+  cursor: pointer;
+  color: #ddd;
+  transition: color 0.2s ease, transform 0.2s ease;
+  display: inline-block;
+  margin: 0 5px;
+}
+
+.star:hover {
+  transform: scale(1.2);
 }

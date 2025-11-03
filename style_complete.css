@@ -1,4 +1,4 @@
-/* CSS Variables for F1 Theme Colors */
+/* CSS Variables */
 :root {
   --f1-red: #d62828;
   --f1-dark: #0b2340;
@@ -236,19 +236,6 @@ body.dark-mode .alert-success {
   object-fit: cover;
 }
 
-/* Rating Stars */
-.star {
-  font-size: 2rem;
-  cursor: pointer;
-  color: #ddd;
-  transition: color 0.2s ease, transform 0.2s ease;
-  display: inline-block;
-  margin: 0 5px;
-}
-
-.star:hover {
-  transform: scale(1.2);
-}
 
 /* Custom F1 Primary Button */
 .btn-f1-primary {
@@ -333,32 +320,6 @@ body.dark-mode .alert-success {
 
 .close-btn:hover {
   color: var(--f1-red);
-}
-
-/* Form Styling */
-.form-custom {
-  border: 2px solid var(--f1-red);
-  padding: 15px;
-  border-radius: 8px;
-  background: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-}
-
-.form-control:focus,
-.form-select:focus {
-  border-color: var(--f1-red);
-  box-shadow: 0 0 0 0.25rem rgba(214, 40, 40, 0.25);
-}
-
-.form-check-input:checked {
-  background-color: var(--f1-red);
-  border-color: var(--f1-red);
-}
-
-.form-check-input:focus {
-  border-color: var(--f1-red);
-  box-shadow: 0 0 0 0.25rem rgba(214, 40, 40, 0.25);
 }
 
 /* List Group Item Styling */
@@ -474,48 +435,14 @@ footer {
 /* ============================================
    TASK 4: SCROLL PROGRESS BAR STYLES
    ============================================ */
-.scrollBar {
+#scrollBar {
   position: fixed;
   top: 0;
   left: 0;
-  height: 4px;
   width: 0%;
-  background: linear-gradient(90deg, #d62828, #ff6b6b);
-  transition: width 200ms ease;
-  text-align: right;
+  height: 6px;
   z-index: 9999;
-  box-shadow: 0 2px 4px rgba(214, 40, 40, 0.3);
-}
-
-.scrollBar span {
-  position: absolute;
-  top: 8px;
-  right: 15px;
-  font-size: 0.75em;
-  font-weight: 600;
-  display: block;
-  text-align: center;
-  background-color: #d62828;
-  color: white;
-  padding: 4px 10px;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
-
-.scrollBar span::after {
-  content: "%";
-  font-size: 0.9em;
-  margin-left: 2px;
-  font-weight: 700;
-}
-
-/* Dark mode scrollbar */
-body.dark-mode .scrollBar {
-  background: linear-gradient(90deg, #ff6b6b, #d62828);
-}
-
-body.dark-mode .scrollBar span {
-  background-color: #ff6b6b;
+  background: linear-gradient(90deg, #ff4d4d, #d62828);
 }
 
 /* ============================================
@@ -576,56 +503,6 @@ body.dark-mode .scrollBar span {
   }
 }
 
-/* ============================================
-   TASK 6: LOADING SPINNER STYLES
-   ============================================ */
-.spinner-border {
-  display: inline-block;
-  width: 1rem;
-  height: 1rem;
-  vertical-align: -0.125em;
-  border: 0.15em solid currentColor;
-  border-right-color: transparent;
-  border-radius: 50%;
-  animation: spinner-border 0.75s linear infinite;
-}
-
-.spinner-border-sm {
-  width: 0.75rem;
-  height: 0.75rem;
-  border-width: 0.1em;
-}
-
-@keyframes spinner-border {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Button disabled state during loading */
-button[disabled] {
-  cursor: not-allowed;
-  opacity: 0.7;
-}
-
-/* Loading state animation */
-.form-custom button[type="submit"][disabled] {
-  background-color: var(--f1-muted);
-  border-color: var(--f1-muted);
-  position: relative;
-  overflow: hidden;
-}
-
-.form-custom button[type="submit"][disabled]::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  animation: shimmer 1.5s infinite;
-}
 
 @keyframes shimmer {
   to {
