@@ -94,7 +94,6 @@
         <section id="about" class="mb-4 mb-lg-5 px-2 px-sm-3">
           <div class="d-flex justify-content-between align-items-center mb-3">
             <h1 class="hero-title display-5 fw-bold mb-0">Formula 1 — Speed & Strategy</h1>
-            <button id="dark-mode-toggle" class="btn btn-outline-secondary">🌙 Dark Mode</button>
           </div>
           <p class="text-muted-custom fst-italic mb-3">F1 is the top class of international single-seater auto racing. Quick facts below.</p>
           <p class="text-dark lh-base">Formula 1, better known as F1, is the pinnacle of motorsport. It's the highest class of international open-wheel single-seater Formula auto racing. These words may seem complicated, but they're actually pretty simple. F1 is the highest level of racing with a single-seater car and the wheels outside the body of the car. Since F1 is the highest level of Formula auto racing it's called Formula 1; it's the highest level of motorsport. Junior levels of motorsport are things like Formula 2 and Formula 3, which are feeder series to F1.</p>
@@ -110,101 +109,14 @@
               <img src="https://motorsportmagazine.b-cdn.net/wp-content/uploads/2024/03/F1-drivers-2010.jpg" class="card-img-top" alt="F1 Driver in cockpit">
               <div class="card-body">
                 <h2 class="card-title h5 fw-bold">Top Drivers</h2>
-                <ul class="list-unstyled text-muted-custom mb-0">
-                  <div id="driversContainer" class="loading">Loading drivers...</div>
-                </ul>
-              </div>
+                <div id="result">Loading...</div>
+        </div>
               <div class="card-footer bg-transparent border-0 pb-3">
                 <div class="btn-group w-100" role="group" aria-label="Driver actions">
                   <a href="https://www.formula1.com/en/drivers" class="btn btn-f1-primary btn-sm" role="button">Explore</a>
                 </div>
               </div>
-            </div>
           </article>
-<script>
-        async function fetchTopDrivers() {
-            const contentDiv = document.getElementById('content');
-            const sessionInfoDiv = document.getElementById('session-info');
-
-            try {
-                // Get the latest session
-                const sessionsResponse = await fetch('https://api.openf1.org/v1/sessions?session_name=Race&year=2023');
-                const sessions = await sessionsResponse.json();
-                
-                if (!sessions || sessions.length === 0) {
-                    throw new Error('No sessions found');
-                }
-
-                // Get the most recent race session
-                const latestSession = sessions.sort((a, b) => 
-                    new Date(b.date_start) - new Date(a.date_start)
-                )[0];
-
-                // Fetch drivers for that session
-                const driversResponse = await fetch(
-                    `https://api.openf1.org/v1/drivers?session_key=${latestSession.session_key}`
-                );
-                const drivers = await driversResponse.json();
-
-                // Get position data
-                const positionsResponse = await fetch(
-                    `https://api.openf1.org/v1/position?session_key=${latestSession.session_key}`
-                );
-                const positions = await positionsResponse.json();
-
-                // Get final positions (last entry for each driver)
-                const finalPositions = {};
-                positions.forEach(pos => {
-                    if (!finalPositions[pos.driver_number] || 
-                        new Date(pos.date) > new Date(finalPositions[pos.driver_number].date)) {
-                        finalPositions[pos.driver_number] = pos;
-                    }
-                });
-
-                // Sort drivers by position
-                const sortedDrivers = drivers
-                    .filter(d => finalPositions[d.driver_number])
-                    .map(d => ({
-                        ...d,
-                        position: finalPositions[d.driver_number].position
-                    }))
-                    .sort((a, b) => a.position - b.position)
-                    .slice(0, 3);
-
-                // Display drivers
-                displayDrivers(sortedDrivers);
-                
-                // Display session info
-                sessionInfoDiv.textContent = `${latestSession.meeting_official_name} - ${latestSession.session_name} (${new Date(latestSession.date_start).toLocaleDateString()})`;
-
-            } catch (error) {
-                contentDiv.innerHTML = `<div class="error">Error loading drivers: ${error.message}</div>`;
-                console.error('Error:', error);
-            }
-        }
-
-        function displayDrivers(drivers) {
-            const contentDiv = document.getElementById('content');
-            
-            const html = `
-                <div class="drivers-grid">
-                    ${drivers.map(driver => `
-                        <div class="driver-card">
-                            <div class="position">#${driver.position}</div>
-                            <div class="driver-name">${driver.full_name}</div>
-                            <div class="team-name">${driver.team_name}</div>
-                            <div class="driver-number">Number: ${driver.driver_number}</div>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-            
-            contentDiv.innerHTML = html;
-        }
-
-        // Load drivers on page load
-        fetchTopDrivers();
-    </script>
           <!-- Race Calendar Card -->
           <article class="col-lg-4 col-md-6" id="calendar">
             <div class="card h-100 shadow-sm">
@@ -214,7 +126,7 @@
                 <div id="schedule-list"></div>
               </div>
               <div class="card-footer bg-transparent border-0 pb-3">
-                <button type="button" class="btn btn-f1-primary w-100 btn-sm">View Full Calendar</button>
+                <a href="https://www.formula1.com/en/racing/2025" class="btn btn-f1-primary w-100 btn-sm" role="button">View Full Calendar</a>
               </div>
             </div>
           </article>

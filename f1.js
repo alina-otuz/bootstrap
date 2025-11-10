@@ -520,14 +520,6 @@ if (typeof $ !== 'undefined') {
       setTimeout(lazyLoadImages, 100);
     });
     lazyLoadImages();
-
-    // Real-time clock
-    function updateTime() {
-      const now = new Date();
-      $("#datetime").text(now.toLocaleString());
-    }
-    updateTime();
-    setInterval(updateTime, 1000);
   });
 }
 // ===== Переключатель день/ночь (Dynamic Style Changes) =====
@@ -547,6 +539,89 @@ themeToggle.addEventListener('click', () => {
   themeToggle.style.transform = 'rotate(360deg)';
   setTimeout(() => (themeToggle.style.transform = ''), 600);
 });
+// ===== Real-time DateTime =====
+  if ($("#datetime").length) {
+    function updateTime() {
+      const now = new Date();
+      $("#datetime").text(now.toLocaleString("en-GB", {
+        weekday: "long", day: "numeric", month: "long", year: "numeric",
+        hour: "2-digit", minute: "2-digit", second: "2-digit"
+      }));
+    }
+    updateTime();
+    setInterval(updateTime, 1000);
+  }
+async function fetchTopDrivers() {
+    const resultDiv = document.getElementById('result');
+
+    try {
+        // Get the latest race session
+        const sessionsResponse = await fetch('https://api.openf1.org/v1/sessions?session_name=Race&year=2024');
+        const sessions = await sessionsResponse.json();
+        
+        if (!sessions || sessions.length === 0) {
+            resultDiv.innerHTML = 'No race data found';
+            return;
+        }
+
+        // Get most recent race
+        const latestSession = sessions.sort((a, b) => 
+            new Date(b.date_start) - new Date(a.date_start)
+        )[0];
+
+        // Fetch drivers
+        const driversResponse = await fetch(
+            `https://api.openf1.org/v1/drivers?session_key=${latestSession.session_key}`
+        );
+        const drivers = await driversResponse.json();
+
+        // Fetch positions
+        const positionsResponse = await fetch(
+            `https://api.openf1.org/v1/position?session_key=${latestSession.session_key}`
+        );
+        const positions = await positionsResponse.json();
+
+        // Get final positions
+        const finalPositions = {};
+        positions.forEach(pos => {
+            if (!finalPositions[pos.driver_number] || 
+                new Date(pos.date) > new Date(finalPositions[pos.driver_number].date)) {
+                finalPositions[pos.driver_number] = pos;
+            }
+        });
+
+        // Sort and get top 3
+        const top3 = drivers
+            .filter(d => finalPositions[d.driver_number])
+            .map(d => ({
+                name: d.full_name,
+                team: d.team_name,
+                position: finalPositions[d.driver_number].position
+            }))
+            .sort((a, b) => a.position - b.position)
+            .slice(0, 3);
+
+        // Display as simple text
+        let raceName = latestSession.meeting_official_name || 
+                      latestSession.meeting_name || 
+                      latestSession.location || 
+                      'Latest Race';
+        
+        let html = `Race Name - <strong>${raceName}</strong><br><br> Finalists <br>`;
+        top3.forEach(driver => {
+            html += `${driver.position}. ${driver.name} - ${driver.team}<br>`;
+        });
+        
+        resultDiv.innerHTML = html;
+
+    } catch (error) {
+        resultDiv.innerHTML = 'Error loading data: ' + error.message;
+    }
+}
+
+fetchTopDrivers();
+
+
 console.log('F1 JavaScript loaded successfully!');
 console.log('Championship Teams:', championshipTeams);
 console.log('Total Championships:', totalChampionships);

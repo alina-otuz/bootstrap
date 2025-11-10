@@ -108,32 +108,21 @@ $(document).ready(function () {
     });
   
     // ===== Theme Toggle =====
-    (function () {
-      if (document.getElementById('themeToggle')) return;
-      const btn = document.createElement('button');
-      btn.id = 'themeToggle';
-      btn.innerHTML = 'Sun';
-      Object.assign(btn.style, {
-        position: 'fixed', bottom: '20px', right: '20px',
-        width: '50px', height: '50px', borderRadius: '50%',
-        background: '#d62828', color: 'white', border: 'none',
-        fontSize: '18px', cursor: 'pointer', zIndex: '9999',
-        transition: 'all 0.6s ease'
-      });
-  
-      const isDark = localStorage.getItem('theme') === 'dark' || 
-                     (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
-      document.body.classList.toggle('dark-mode', isDark);
-      btn.innerHTML = isDark ? 'Moon' : 'Sun';
-      document.body.appendChild(btn);
-  
-      btn.addEventListener('click', () => {
-        const nowDark = !document.body.classList.contains('dark-mode');
-        document.body.classList.toggle('dark-mode', nowDark);
-        localStorage.setItem('theme', nowDark ? 'dark' : 'light');
-        btn.innerHTML = nowDark ? 'Moon' : 'Sun';
-        btn.style.transform = 'rotate(360deg)';
-        setTimeout(() => btn.style.transform = '', 600);
-      });
-    })();
+    // ===== button =====
+   const themeToggle = document.createElement('button');
+themeToggle.textContent = '🌞 / 🌙';
+themeToggle.id = 'themeToggle';
+Object.assign(themeToggle.style, {
+  position: 'fixed', bottom: '20px', right: '20px',
+  padding: '10px 14px', border: 'none', borderRadius: '50%',
+  fontSize: '20px', cursor: 'pointer',
+  background: '#d62828', color: 'white', transition: 'all 0.6s ease'
+});
+document.body.appendChild(themeToggle);
+
+themeToggle.addEventListener('click', () => {
+  document.body.classList.toggle('dark-mode');
+  themeToggle.style.transform = 'rotate(360deg)';
+  setTimeout(() => (themeToggle.style.transform = ''), 600);
+});
   });

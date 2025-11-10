@@ -198,15 +198,19 @@ if (typeof $ !== 'undefined') {
     let docHeight = $(document).height() - $(window).height();
     let scrollPercent = (scrollTop / docHeight) * 100;
     $("#scrollBar").css("width", scrollPercent + "%");
-  });
+  });}
 
-     // Real-time clock
+// ===== Real-time DateTime =====
+  if ($("#datetime").length) {
     function updateTime() {
       const now = new Date();
-      $("#datetime").text(now.toLocaleString());
+      $("#datetime").text(now.toLocaleString("en-GB", {
+        weekday: "long", day: "numeric", month: "long", year: "numeric",
+        hour: "2-digit", minute: "2-digit", second: "2-digit"
+      }));
     }
     updateTime();
     setInterval(updateTime, 1000);
-  };
+  }
 
 console.log('JavaScript loaded successfully!');
