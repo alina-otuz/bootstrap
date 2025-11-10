@@ -407,31 +407,6 @@ if (typeof $ !== 'undefined') {
     $("#scrollBar").css("width", scrollPercent + "%");
   });
 
-  $(document).ready(function() {
-    // Copy to clipboard functionality
-    $('.content').each(function() {
-      const content = $(this);
-      const copyBtn = $('<button class="copy-btn btn btn-sm btn-outline-secondary mt-2">ðŸ“‹ Copy</button>');
-      content.append(copyBtn);
-      
-      copyBtn.on('click', function(e) {
-        e.stopPropagation();
-        const textToCopy = content.clone().find('.copy-btn').remove().end().text().trim();
-        
-        const $temp = $('<textarea>');
-        $('body').append($temp);
-        $temp.val(textToCopy).select();
-        document.execCommand('copy');
-        $temp.remove();
-        
-        copyBtn.html('âœ“ Copied!').removeClass('btn-outline-secondary').addClass('btn-success');
-        
-        setTimeout(function() {
-          copyBtn.html('ðŸ“‹ Copy').removeClass('btn-success').addClass('btn-outline-secondary');
-        }, 2000);
-      });
-    });
-
     // Lazy loading images
     $('.carousel-item img').each(function() {
       const $img = $(this);
@@ -473,8 +448,8 @@ if (typeof $ !== 'undefined') {
     }
     updateTime();
     setInterval(updateTime, 1000);
-  });
-}
+  };
+
 // Function to apply theme based on stored value
 function applyTheme(theme) {
   if (theme === 'dark') {
