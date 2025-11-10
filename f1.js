@@ -99,7 +99,7 @@ if (darkModeBtn) {
     document.body.classList.toggle('dark-mode', isDarkMode);
     
     const t = translations[currentLanguage] || translations['en'] || {};
-    darkModeBtn.textContent = isDarkMode ? (t.lightMode || '☀️ Light Mode') : (t.darkMode || '🌙 Dark Mode');
+    darkModeBtn.textContent = isDarkMode ? (t.lightMode || 'â˜€ï¸ Light Mode') : (t.darkMode || 'ðŸŒ™ Dark Mode');
   });
 }
 
@@ -122,7 +122,7 @@ function changeLanguage(lang) {
   const dmBtn = document.querySelector('#dark-mode-toggle');
   if (dmBtn) {
     const t = translations[lang];
-    dmBtn.textContent = isDarkMode ? (t.lightMode || '☀️ Light Mode') : (t.darkMode || '🌙 Dark Mode');
+    dmBtn.textContent = isDarkMode ? (t.lightMode || 'â˜€ï¸ Light Mode') : (t.darkMode || 'ðŸŒ™ Dark Mode');
   }
 }
 
@@ -271,7 +271,7 @@ if (teamsContainer) {
 const raceSchedule = [
   { race: 'Singapore GP', date: 'Oct 3-5', circuit: 'Marina Bay' },
   { race: 'United States GP', date: 'Oct 17-20', circuit: 'Austin' },
-  { race: 'Mexico City GP', date: 'Oct 24-27', circuit: 'Autódromo' },
+  { race: 'Mexico City GP', date: 'Oct 24-27', circuit: 'AutÃ³dromo' },
   { race: 'Brazilian GP', date: 'Nov 1-3', circuit: 'Interlagos' },
   { race: 'Las Vegas GP', date: 'Nov 14-16', circuit: 'Las Vegas Strip' },
   { race: 'Qatar GP', date: 'Nov 21-23', circuit: 'Lusail' },
@@ -326,7 +326,7 @@ if (soundButton) {
     oscillator.stop(audioContext.currentTime + 0.5);
     
     const originalText = soundButton.textContent;
-    soundButton.textContent = '🏎️ Vroom!';
+    soundButton.textContent = 'ðŸŽï¸ Vroom!';
     setTimeout(() => {
       soundButton.textContent = originalText;
     }, 1000);
@@ -466,7 +466,7 @@ if (typeof $ !== 'undefined') {
     // Copy to clipboard functionality
     $('.content').each(function() {
       const content = $(this);
-      const copyBtn = $('<button class="copy-btn btn btn-sm btn-outline-secondary mt-2">📋 Copy</button>');
+      const copyBtn = $('<button class="copy-btn btn btn-sm btn-outline-secondary mt-2">ðŸ“‹ Copy</button>');
       content.append(copyBtn);
       
       copyBtn.on('click', function(e) {
@@ -479,10 +479,10 @@ if (typeof $ !== 'undefined') {
         document.execCommand('copy');
         $temp.remove();
         
-        copyBtn.html('✓ Copied!').removeClass('btn-outline-secondary').addClass('btn-success');
+        copyBtn.html('âœ“ Copied!').removeClass('btn-outline-secondary').addClass('btn-success');
         
         setTimeout(function() {
-          copyBtn.html('📋 Copy').removeClass('btn-success').addClass('btn-outline-secondary');
+          copyBtn.html('ðŸ“‹ Copy').removeClass('btn-success').addClass('btn-outline-secondary');
         }, 2000);
       });
     });
@@ -520,9 +520,26 @@ if (typeof $ !== 'undefined') {
       setTimeout(lazyLoadImages, 100);
     });
     lazyLoadImages();
+
+    // Real-time clock
+    function updateTime() {
+      const now = new Date();
+      $("#datetime").text(now.toLocaleString());
+    }
+    updateTime();
+    setInterval(updateTime, 1000);
   });
 }
-// ===== Переключатель день/ночь (Dynamic Style Changes) =====
+// Function to apply theme based on stored value
+function applyTheme(theme) {
+  if (theme === 'dark') {
+    document.body.classList.add('dark-mode');
+  } else {
+    document.body.classList.remove('dark-mode');
+  }
+}
+
+// Create toggle button
 const themeToggle = document.createElement('button');
 themeToggle.textContent = '🌞 / 🌙';
 themeToggle.id = 'themeToggle';
@@ -534,23 +551,28 @@ Object.assign(themeToggle.style, {
 });
 document.body.appendChild(themeToggle);
 
+// Load theme from local storage on page load
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme) {
+  applyTheme(savedTheme);
+}
+
+// Add event listener to toggle theme
 themeToggle.addEventListener('click', () => {
-  document.body.classList.toggle('dark-mode');
+  const isDarkMode = document.body.classList.toggle('dark-mode');
+  
+  // Save the current theme in local storage
+  if (isDarkMode) {
+    localStorage.setItem('theme', 'dark');
+  } else {
+    localStorage.setItem('theme', 'light');
+  }
+  
+  // Animate the button
   themeToggle.style.transform = 'rotate(360deg)';
   setTimeout(() => (themeToggle.style.transform = ''), 600);
 });
-// ===== Real-time DateTime =====
-  if ($("#datetime").length) {
-    function updateTime() {
-      const now = new Date();
-      $("#datetime").text(now.toLocaleString("en-GB", {
-        weekday: "long", day: "numeric", month: "long", year: "numeric",
-        hour: "2-digit", minute: "2-digit", second: "2-digit"
-      }));
-    }
-    updateTime();
-    setInterval(updateTime, 1000);
-  }
+
 async function fetchTopDrivers() {
     const resultDiv = document.getElementById('result');
 
@@ -607,7 +629,7 @@ async function fetchTopDrivers() {
                       latestSession.location || 
                       'Latest Race';
         
-        let html = `Race Name - <strong>${raceName}</strong><br><br> Finalists <br>`;
+        let html = `<strong>${raceName}</strong><br><br>`;
         top3.forEach(driver => {
             html += `${driver.position}. ${driver.name} - ${driver.team}<br>`;
         });

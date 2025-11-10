@@ -135,7 +135,16 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// ===== Переключатель день/ночь (Dynamic Style Changes) =====
+// Function to apply theme based on stored value
+function applyTheme(theme) {
+  if (theme === 'dark') {
+    document.body.classList.add('dark-mode');
+  } else {
+    document.body.classList.remove('dark-mode');
+  }
+}
+
+// Create toggle button
 const themeToggle = document.createElement('button');
 themeToggle.textContent = '🌞 / 🌙';
 themeToggle.id = 'themeToggle';
@@ -147,8 +156,24 @@ Object.assign(themeToggle.style, {
 });
 document.body.appendChild(themeToggle);
 
+// Load theme from local storage on page load
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme) {
+  applyTheme(savedTheme);
+}
+
+// Add event listener to toggle theme
 themeToggle.addEventListener('click', () => {
-  document.body.classList.toggle('dark-mode');
+  const isDarkMode = document.body.classList.toggle('dark-mode');
+  
+  // Save the current theme in local storage
+  if (isDarkMode) {
+    localStorage.setItem('theme', 'dark');
+  } else {
+    localStorage.setItem('theme', 'light');
+  }
+  
+  // Animate the button
   themeToggle.style.transform = 'rotate(360deg)';
   setTimeout(() => (themeToggle.style.transform = ''), 600);
 });
