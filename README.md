@@ -83,6 +83,6 @@ For translation support: add language-specific files or adapt existing template.
 
 Please keep code and structure consistent with existing sections for uniformity.
 
-✅ Goal & Vision
+Goal & Vision
 
 The vision of Sport World is to offer a global sports hub that is accessible to a wide audience (English, Russian, Kazakh speakers), to inform and inspire people about the power of sport in history and modern society.
