@@ -1,5 +1,192 @@
 $(document).ready(function () {
-  console.log("jQuery is ready! (script1.js loaded)");
+  console.log("jQuery is ready!");
+
+  // Language Switcher with localStorage
+let translations = {};
+let currentLanguage = localStorage.getItem('selectedLanguage') || 'en';
+
+// Load translations from JSON file
+async function loadTranslations() {
+  try {
+    const response = await fetch('assets/i18n/index.json');
+    translations = await response.json();
+    return true;
+  } catch (error) {
+    console.error('Error loading translations:', error);
+    return false;
+  }
+}
+
+// Apply translations to the page
+function applyTranslations(lang) {
+  const t = translations[lang];
+  if (!t) return;
+
+  // Navigation
+  document.querySelector('.navbar-brand span').textContent = t.nav.brand;
+  const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+  if (navLinks[0]) navLinks[0].textContent = t.nav.olympics;
+  if (navLinks[1]) navLinks[1].textContent = t.nav.cybersport;
+  if (navLinks[2]) navLinks[2].textContent = t.nav.formula1;
+
+  // Hero section
+  document.querySelector('.pic-overlay h1').textContent = t.hero.title;
+  const heroTitle = document.querySelector('#about-sport .hero-title');
+  if (heroTitle) heroTitle.textContent = t.hero.mainTitle;
+  const heroSubtitle = document.querySelector('#about-sport .fst-italic');
+  if (heroSubtitle) heroSubtitle.textContent = t.hero.subtitle;
+  const heroDescription = document.querySelector('#about-sport .text-dark');
+  if (heroDescription) heroDescription.textContent = t.hero.description;
+
+  // Sidebar
+  const sidebarTitle = document.querySelector('.sidebar-section .hero-title');
+  if (sidebarTitle) sidebarTitle.textContent = t.sidebar.navigation;
+  
+  const sidebarLinks = document.querySelectorAll('.sidebar-section nav a');
+  if (sidebarLinks[0]) sidebarLinks[0].textContent = t.sidebar.aboutSport;
+  if (sidebarLinks[1]) sidebarLinks[1].textContent = t.sidebar.modern;
+  if (sidebarLinks[2]) sidebarLinks[2].textContent = t.sidebar.history;
+  if (sidebarLinks[3]) sidebarLinks[3].textContent = t.sidebar.gallery;
+  if (sidebarLinks[4]) sidebarLinks[4].textContent = t.sidebar.registration;
+  if (sidebarLinks[5]) sidebarLinks[5].textContent = t.sidebar.faq;
+
+  const statTitles = document.querySelectorAll('.stat-title');
+  const statValues = document.querySelectorAll('.stat-value');
+  if (statTitles[0]) statTitles[0].textContent = t.sidebar.statsIndustry;
+  if (statValues[0]) statValues[0].textContent = t.sidebar.statsIndustryValue;
+  if (statTitles[1]) statTitles[1].textContent = t.sidebar.statsOrigins;
+  if (statValues[1]) statValues[1].textContent = t.sidebar.statsOriginsValue;
+  if (statTitles[2]) statTitles[2].textContent = t.sidebar.statsMotto;
+  if (statValues[2]) statValues[2].innerHTML = `<em>${t.sidebar.statsMottoValue}</em>`;
+
+  // Cards
+  const cards = document.querySelectorAll('.card');
+  const cardData = [
+    t.cards.skiing,
+    t.cards.boxing,
+    t.cards.tennis,
+    t.cards.football,
+    t.cards.athletics,
+    t.cards.team
+  ];
+
+  cards.forEach((card, index) => {
+    if (cardData[index]) {
+      const title = card.querySelector('.card-title');
+      const text = card.querySelector('.card-text');
+      const button = card.querySelector('.btn');
+      
+      if (title) title.textContent = cardData[index].title;
+      if (text) text.textContent = cardData[index].description;
+      if (button) button.textContent = cardData[index].button;
+    }
+  });
+
+  // Registration Form
+  const formTitle = document.querySelector('#register .card-title');
+  if (formTitle) formTitle.textContent = t.form.title;
+
+  // FAQ
+  const faqTitle = document.querySelector('#faq h2');
+  if (faqTitle) faqTitle.textContent = t.faq.title;
+  
+  const faqSearch = document.getElementById('faqSearch');
+  if (faqSearch) faqSearch.placeholder = t.faq.search;
+
+  const faqQuestions = document.querySelectorAll('#faq .question');
+  const faqAnswers = document.querySelectorAll('#faq .answer');
+  
+  if (faqQuestions[0]) faqQuestions[0].textContent = t.faq.q1;
+  if (faqAnswers[0]) faqAnswers[0].textContent = t.faq.a1;
+  if (faqQuestions[1]) faqQuestions[1].textContent = t.faq.q2;
+  if (faqAnswers[1]) faqAnswers[1].textContent = t.faq.a2;
+  if (faqQuestions[2]) faqQuestions[2].textContent = t.faq.q3;
+  if (faqAnswers[2]) faqAnswers[2].textContent = t.faq.a3;
+
+  // Update data-question attributes for FAQ search
+  const faqItems = document.querySelectorAll('#faq .accordion-item');
+  if (faqItems[0]) faqItems[0].setAttribute('data-question', t.faq.q1);
+  if (faqItems[1]) faqItems[1].setAttribute('data-question', t.faq.q2);
+  if (faqItems[2]) faqItems[2].setAttribute('data-question', t.faq.q3);
+
+  // Copy section
+  const copyText = document.getElementById('copyText');
+  if (copyText) copyText.textContent = t.copySection.text;
+  const copyBtn = document.getElementById('copyBtn');
+  if (copyBtn) copyBtn.textContent = t.copySection.button;
+
+  // Rating section
+  const ratingTitle = document.querySelector('#rating h2');
+  if (ratingTitle) ratingTitle.textContent = t.rating.title;
+  const ratingQuestion = document.querySelector('#rating .card-body > p:first-of-type');
+  if (ratingQuestion) ratingQuestion.textContent = t.rating.question;
+  const ratingMessage = document.getElementById('rating-message');
+  if (ratingMessage) ratingMessage.textContent = t.rating.message;
+  const resetBtn = document.getElementById('reset-form-btn');
+  if (resetBtn) resetBtn.textContent = t.rating.resetButton;
+
+  // Contact
+  const contactBtn = document.getElementById('openPopup');
+  if (contactBtn) contactBtn.textContent = t.contact.button;
+  const popupTitle = document.querySelector('#popup h4');
+  if (popupTitle) popupTitle.textContent = t.contact.popupTitle;
+  
+  const contactName = document.getElementById('contactName');
+  if (contactName) contactName.placeholder = t.contact.namePlaceholder;
+  const contactEmail = document.getElementById('contactEmail');
+  if (contactEmail) contactEmail.placeholder = t.contact.emailPlaceholder;
+  const contactMessage = document.getElementById('contactMessage');
+  if (contactMessage) contactMessage.placeholder = t.contact.messagePlaceholder;
+  const sendBtn = document.querySelector('#contactForm button[type="submit"]');
+  if (sendBtn) sendBtn.textContent = t.contact.sendButton;
+
+  // Footer
+  const footerAuthors = document.querySelector('footer p:first-child');
+  if (footerAuthors) footerAuthors.textContent = t.footer.authors;
+}
+
+// Change language
+function changeLanguage(lang) {
+  if (!translations[lang]) return;
+  
+  currentLanguage = lang;
+  localStorage.setItem('selectedLanguage', lang);
+  applyTranslations(lang);
+  
+  // Update selector
+  const selector = document.getElementById('language-selector');
+  if (selector) {
+    selector.value = lang;
+  }
+}
+
+// Initialize language switcher
+async function initLanguageSwitcher() {
+  const loaded = await loadTranslations();
+  
+  if (loaded) {
+    // Apply saved language or default
+    applyTranslations(currentLanguage);
+    
+    // Set selector to saved language
+    const selector = document.getElementById('language-selector');
+    if (selector) {
+      selector.value = currentLanguage;
+      
+      // Add event listener for language change
+      selector.addEventListener('change', (e) => {
+        changeLanguage(e.target.value);
+      });
+    }
+  }
+}
+
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initLanguageSwitcher);
+} else {
+  initLanguageSwitcher();
+}
 
   // ===== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ДЛЯ RESET =====
   let currentStep = 0;
@@ -484,4 +671,15 @@ themeToggle.addEventListener('click', () => {
   themeToggle.style.transform = 'rotate(360deg)';
   setTimeout(() => (themeToggle.style.transform = ''), 600);
 });
-});
+
+const coll = document.getElementsByClassName("question");
+for (let i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    const content = this.nextElementSibling;
+    if (content.style.maxHeight) {
+      content.style.maxHeight = null;
+    } else {
+      content.style.maxHeight = content.scrollHeight + "px";
+    }})}
+  });

@@ -1,8 +1,6 @@
 // ============================================
 // GLOBAL VARIABLES
 // ============================================
-let currentLanguage = 'en';
-let translations = {};
 let isDarkMode = false;
 let totalChampionships = 0;
 
@@ -28,67 +26,6 @@ totalChampionships = f1Teams.reduce((total, team) => total + team.championships,
 // ============================================
 // INITIALIZATION
 // ============================================
-const TRANSLATIONS_PATH = 'assets/i18n/f1.json';
-
-// Load saved language preference
-const savedLang = localStorage.getItem('language');
-if (savedLang) currentLanguage = savedLang;
-
-// Try to get initial totalChampionships from DOM if available
-const totalChampValueElem = document.getElementById('total-championships-value');
-if (totalChampValueElem) {
-  const parsed = parseInt(totalChampValueElem.textContent.replace(/\D/g, ''), 10);
-  if (!isNaN(parsed)) totalChampionships = parsed;
-} else {
-  const totalElem = document.getElementById('total-championships');
-  if (totalElem && totalElem.dataset && totalElem.dataset.value) {
-    const parsed = parseInt(totalElem.dataset.value, 10);
-    if (!isNaN(parsed)) totalChampionships = parsed;
-  }
-}
-
-// ============================================
-// LOAD TRANSLATIONS
-// ============================================
-fetch(TRANSLATIONS_PATH)
-  .then(response => {
-    if (!response.ok) throw new Error('Failed to load translations: ' + response.status);
-    return response.json();
-  })
-  .then(data => {
-    translations = data;
-    
-    // Fallback to 'en' if current language not available
-    if (!translations[currentLanguage]) {
-      currentLanguage = Object.keys(translations)[0] || 'en';
-    }
-
-    // Set language selector value
-    const languageSelector = document.querySelector('#language-selector');
-    if (languageSelector) {
-      languageSelector.value = currentLanguage;
-    }
-  
-    // Apply translations
-    changeLanguage(currentLanguage);
-  })
-  .catch(err => {
-    console.error('Translation loading error:', err);
-  });
-
-// ============================================
-// EVENT LISTENERS
-// ============================================
-
-// Language selector
-const languageSelector = document.querySelector('#language-selector');
-if (languageSelector) {
-  languageSelector.addEventListener('change', (e) => {
-    currentLanguage = e.target.value;
-    localStorage.setItem('language', currentLanguage);
-    changeLanguage(currentLanguage);
-  });
-}
 
 // Dark mode toggle - single listener
 const darkModeBtn = document.querySelector('#dark-mode-toggle');
@@ -106,145 +43,153 @@ if (darkModeBtn) {
 // ============================================
 // TRANSLATION FUNCTIONS
 // ============================================
+// Language Switcher for Formula 1 page
+let translations = {};
+let currentLanguage = localStorage.getItem('selectedLanguage') || 'en';
 
-function changeLanguage(lang) {
-  if (!translations || !translations[lang]) {
-    console.warn(`No translations for "${lang}", falling back to "en".`);
-    if (translations && translations.en) {
-      applyTranslations(translations.en);
-    }
+// Load translations from JSON file
+async function loadTranslations() {
+  try {
+    const response = await fetch('assets/i18n/f1.json');
+    translations = await response.json();
+    return true;
+  } catch (error) {
+    console.error('Error loading translations:', error);
+    return false;
+  }
+}
+
+// Apply translations to the page
+function applyTranslations(lang) {
+  if (!translations[lang]) {
+    console.error(`Language ${lang} not found`);
     return;
   }
 
-  applyTranslations(translations[lang]);
+  const t = translations[lang];
 
-  // Update dark mode button text
-  const dmBtn = document.querySelector('#dark-mode-toggle');
-  if (dmBtn) {
-    const t = translations[lang];
-    dmBtn.textContent = isDarkMode ? (t.lightMode || 'â˜€ï¸ Light Mode') : (t.darkMode || 'ðŸŒ™ Dark Mode');
-  }
-}
+  // Navigation
+  const navBrand = document.querySelector('.navbar-brand span');
+  if (navBrand) navBrand.textContent = t.title || "Sport World";
+  
+  const navLinks = document.querySelectorAll('.nav-link');
+  if (navLinks[0]) navLinks[0].textContent = t.navMain || navLinks[0].textContent;
+  if (navLinks[1]) navLinks[1].textContent = t.navOlympics || navLinks[1].textContent;
+  if (navLinks[2]) navLinks[2].textContent = t.navCybersport || navLinks[2].textContent;
 
-function applyTranslations(t) {
-  if (!t) return;
+  // Sidebar
+  const sidebarTitle = document.querySelector('.sidebar-section h3');
+  if (sidebarTitle) sidebarTitle.textContent = t.quickNav;
+  
+  const sidebarLinks = document.querySelectorAll('.sidebar-section a');
+  if (sidebarLinks[0]) sidebarLinks[0].textContent = t.aboutF1;
+  if (sidebarLinks[1]) sidebarLinks[1].textContent = t.topDrivers;
+  if (sidebarLinks[2]) sidebarLinks[2].textContent = t.raceCalendar;
+  if (sidebarLinks[3]) sidebarLinks[3].textContent = t.photoGallery;
+  if (sidebarLinks[4]) sidebarLinks[4].textContent = t.teams;
+  if (sidebarLinks[5]) sidebarLinks[5].textContent = t.qa;
 
-  // Helper function
-  const setText = (selectorOrElem, text, isPlaceholder = false) => {
-    if (!text) return;
-    let el;
-    if (typeof selectorOrElem === 'string') {
-      el = document.querySelector(selectorOrElem);
-    } else {
-      el = selectorOrElem;
-    }
-    if (!el) return;
-    
-    if (isPlaceholder) {
-      el.placeholder = text;
-    } else {
-      el.textContent = text;
-    }
-  };
+  // Quick stats
+  const statTitles = document.querySelectorAll('.stat-title');
+  if (statTitles[0]) statTitles[0].textContent = t.winsRecord || "Total F1 Wins Record";
+  if (statTitles[1]) statTitles[1].textContent = t.consecutiveChamp || "Most Consecutive Championships";
+  if (statTitles[2]) statTitles[2].textContent = t.fastestSpeed || "Fastest Speed";
 
-  // Main title and subtitle
-  setText('.hero-title.display-5', t.title);
-  setText('.text-muted-custom.fst-italic', t.subtitle);
+  // Hero section
+  const heroTitle = document.querySelector('#about h1');
+  const heroSubtitle = document.querySelector('#about .fst-italic');
+  const heroDescription = document.querySelector('#about .text-dark');
+  if (heroTitle) heroTitle.textContent = t.title + " – " + t.subtitle;
+  if (heroSubtitle) heroSubtitle.textContent = t.subtitle;
+  if (heroDescription) heroDescription.textContent = t.description;
 
-  const description = document.querySelector('.text-dark.lh-base') || document.querySelector('#description');
-  if (description && t.description) description.textContent = t.description;
+  // Three column cards
+  const cardTitles = document.querySelectorAll('.card-title.h5');
+  if (cardTitles[0]) cardTitles[0].textContent = t.topDrivers;
+  if (cardTitles[1]) cardTitles[1].textContent = t.raceCalendar;
+  if (cardTitles[2]) cardTitles[2].textContent = t.raceHighlights;
 
-  // Sound button
-  setText('#play-sound-btn', t.engineSound);
+  // Card buttons
+  const cardButtons = document.querySelectorAll('.card-footer .btn, .card-footer a.btn');
+  if (cardButtons[0]) cardButtons[0].textContent = t.viewStats || "Explore";
+  if (cardButtons[1]) cardButtons[1].textContent = t.viewFullCalendar;
+  if (cardButtons[2]) cardButtons[2].textContent = t.watch;
 
-  // Top Drivers section
-  setText('#drivers .card-title', t.topDrivers);
-  const driversBtns = document.querySelectorAll('#drivers .btn-group button');
-  if (driversBtns.length > 0 && t.viewStats) driversBtns[0].textContent = t.viewStats;
-  if (driversBtns.length > 1 && t.follow) driversBtns[1].textContent = t.follow;
-
-  // Calendar
-  setText('#calendar .card-title', t.raceCalendar);
-  const calendarBtn = document.querySelector('#calendar .btn-f1-primary');
-  if (calendarBtn && t.viewFullCalendar) calendarBtn.textContent = t.viewFullCalendar;
-
-  // Highlights
-  const allCardTitles = document.querySelectorAll('.card-title');
-  if (allCardTitles && allCardTitles.length >= 3 && t.raceHighlights) {
-    if (allCardTitles[2]) allCardTitles[2].textContent = t.raceHighlights;
-  }
-  const highlightsDesc = document.querySelector('.card-text.text-muted-custom');
-  if (highlightsDesc && t.highlightsDesc) highlightsDesc.textContent = t.highlightsDesc;
-  const highlightsBtns = document.querySelectorAll('.card:last-of-type .btn-group a, .card:last-of-type .btn-group button');
-  if (highlightsBtns[0] && t.watch) highlightsBtns[0].textContent = t.watch;
-  if (highlightsBtns[1] && t.share) highlightsBtns[1].textContent = t.share;
+  // Race highlights description
+  const highlightsDesc = document.querySelectorAll('.card-text.text-muted-custom')[0];
+  if (highlightsDesc) highlightsDesc.textContent = t.highlightsDesc;
 
   // Teams section
-  setText('#teams h2', t.teamsTitle);
-  const teamSearch = document.querySelector('#team-search');
-  if (teamSearch && t.searchTeams) teamSearch.placeholder = t.searchTeams;
-  const championsBtn = document.querySelector('#championship-teams-btn');
-  if (championsBtn && t.showChampions) championsBtn.textContent = t.showChampions;
+  const teamsTitle = document.querySelector('#teams h2');
+  if (teamsTitle) teamsTitle.textContent = t.teamsTitle;
 
-  // Gallery & FAQ
-  setText('#gallery h2', t.historicMoments);
-  setText('#faq h2', t.faq);
+  const teamSearch = document.getElementById('team-search');
+  if (teamSearch) teamSearch.placeholder = t.searchTeams || "🔍 Search teams by name or country...";
 
-  // FAQ buttons and answers
-  const faqButtons = document.querySelectorAll('.collapsible');
-  if (faqButtons && faqButtons.length >= 3) {
-    if (t.faqQ1) faqButtons[0].textContent = t.faqQ1;
-    if (t.faqQ2) faqButtons[1].textContent = t.faqQ2;
-    if (t.faqQ3) faqButtons[2].textContent = t.faqQ3;
+  const championBtn = document.getElementById('championship-teams-btn');
+  if (championBtn) championBtn.textContent = t.showChampions || "Show Championship Winners";
 
-    if (faqButtons[0].nextElementSibling && t.faqA1) faqButtons[0].nextElementSibling.textContent = t.faqA1;
-    if (faqButtons[1].nextElementSibling && t.faqA2) faqButtons[1].nextElementSibling.textContent = t.faqA2;
-    if (faqButtons[2].nextElementSibling && t.faqA3) faqButtons[2].nextElementSibling.textContent = t.faqA3;
+  // Gallery section
+  const galleryTitle = document.querySelector('#gallery h2');
+  if (galleryTitle) galleryTitle.textContent = t.historicMoments;
+
+  // FAQ section
+  const faqTitle = document.querySelector('#faq h2');
+  if (faqTitle) faqTitle.textContent = t.faq;
+
+  const collapsibles = document.querySelectorAll('.collapsible');
+  const contents = document.querySelectorAll('.content p');
+  
+  if (collapsibles[0]) collapsibles[0].textContent = t.faqQ1 || collapsibles[0].textContent;
+  if (contents[0]) contents[0].textContent = t.faqA1 || contents[0].textContent;
+  if (collapsibles[1]) collapsibles[1].textContent = t.faqQ2 || collapsibles[1].textContent;
+  if (contents[1]) contents[1].textContent = t.faqA2 || contents[1].textContent;
+  if (collapsibles[2]) collapsibles[2].textContent = t.faqQ3 || collapsibles[2].textContent;
+  if (contents[2]) contents[2].textContent = t.faqA3 || contents[2].textContent;
+
+  // Save current language
+  currentLanguage = lang;
+  localStorage.setItem('selectedLanguage', lang);
+}
+
+// Change language function
+function changeLanguage(lang) {
+  applyTranslations(lang);
+  
+  // Update selector value
+  const selector = document.getElementById('language-selector');
+  if (selector) {
+    selector.value = lang;
   }
+}
 
-  // Sidebar links & quick stats
-  setText('.sidebar-section h3', t.quickNav);
-  const navLinks = document.querySelectorAll('.sidebar-section a');
-  if (navLinks && navLinks.length >= 8) {
-    if (t.aboutF1) navLinks[0].textContent = t.aboutF1;
-    if (t.topDrivers) navLinks[1].textContent = t.topDrivers;
-    if (t.raceCalendar) navLinks[2].textContent = t.raceCalendar;
-    if (t.photoGallery) navLinks[3].textContent = t.photoGallery;
-    if (t.teams) navLinks[4].textContent = t.teams;
-    if (t.rateUs) navLinks[5].textContent = t.rateUs;
-    if (t.newsletter) navLinks[6].textContent = t.newsletter;
-    if (t.qa) navLinks[7].textContent = t.qa;
-  }
-
-  // Stat titles and values
-  const statTitles = document.querySelectorAll('.stat-title');
-  if (statTitles && statTitles.length >= 3) {
-    if (t.winsRecord) statTitles[0].textContent = t.winsRecord;
-    if (t.consecutiveChamp) statTitles[1].textContent = t.consecutiveChamp;
-    if (t.fastestSpeed) statTitles[2].textContent = t.fastestSpeed;
-  }
-
-  const statValues = document.querySelectorAll('.stat-value');
-  if (statValues && statValues.length >= 3) {
-    if (t.winsRecordText) statValues[0].textContent = t.winsRecordText;
-    if (t.consecutiveChampText) statValues[1].textContent = t.consecutiveChampText;
-    if (t.fastestSpeedText) statValues[2].textContent = t.fastestSpeedText;
-  }
-
-  // Update total championships - FIX: Added missing variable declaration
-  const totalChampElem = document.querySelector('#total-championships');
-  if (totalChampElem) {
-    const label = t.totalChampionships || 'Total F1 Championships';
-    const valueSpan = totalChampElem.querySelector('.value');
-    if (valueSpan) {
-      valueSpan.textContent = totalChampionships;
-      totalChampElem.innerHTML = `${label}: <span class="value">${totalChampionships}</span>`;
-    } else {
-      totalChampElem.textContent = `${label}: ${totalChampionships}`;
+// Initialize translations on page load
+async function initTranslations() {
+  const loaded = await loadTranslations();
+  
+  if (loaded) {
+    // Apply saved or default language
+    applyTranslations(currentLanguage);
+    
+    // Set selector to current language
+    const selector = document.getElementById('language-selector');
+    if (selector) {
+      selector.value = currentLanguage;
+      
+      // Add event listener
+      selector.addEventListener('change', function() {
+        changeLanguage(this.value);
+      });
     }
   }
 }
 
+// Start when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initTranslations);
+} else {
+  initTranslations();
+}
 // ============================================
 // DISPLAY TEAMS AND SCHEDULE
 // ============================================

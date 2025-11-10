@@ -1,139 +1,148 @@
 // ============================================
 // GLOBAL VARIABLES
 // ============================================
-let currentLanguage = 'en';
-let translations = {};
+
 let isDarkMode = false;
 
-// Load saved language preference
-// ============================================
-// CYBERSPORT PAGE LANGUAGE SWITCHER + CLOCK
-// ============================================
-
 document.addEventListener('DOMContentLoaded', () => {
-  const langSelector = document.getElementById('language-selector');
+ // Language Switcher for Cybersport page
+let translations = {};
+let currentLanguage = localStorage.getItem('selectedLanguage') || 'en';
 
-  // ===== APPLY TRANSLATIONS =====
-  function applyTranslations(t) {
-    if (!t) return;
+// Load translations from JSON file
+async function loadTranslations() {
+  try {
+    const response = await fetch('assets/i18n/cybersport.json');
+    translations = await response.json();
+    return true;
+  } catch (error) {
+    console.error('Error loading translations:', error);
+    return false;
+  }
+}
 
-    // Helper to safely set text or placeholder
-    const setText = (selector, text, isPlaceholder = false) => {
-      if (!text) return;
-      const el = document.querySelector(selector);
-      if (!el) return;
-      if (isPlaceholder) el.placeholder = text;
-      else el.textContent = text;
-    };
-
-    // -----------------------------
-    // NAVBAR
-    // -----------------------------
-    const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
-    if (navLinks.length >= 3) {
-      navLinks[0].textContent = t.main_page;
-      navLinks[1].textContent = t.olympics;
-      navLinks[2].textContent = t.formula1;
-    }
-
-    // -----------------------------
-    // SIDEBAR
-    // -----------------------------
-    setText('.sidebar-section h3.hero-title', t.quick_navigation);
-
-    const sideLinks = document.querySelectorAll('.sidebar-section a');
-    if (sideLinks.length >= 4) {
-      sideLinks[0].textContent = t.about_esports;
-      sideLinks[1].textContent = t.popular_games;
-      sideLinks[2].textContent = t.tournaments;
-      sideLinks[3].textContent = t.gallery;
-    }
-
-    const statTitles = document.querySelectorAll('.quick-stat-card .stat-title');
-    const statValues = document.querySelectorAll('.quick-stat-card .stat-value');
-    if (statTitles.length >= 3 && statValues.length >= 3) {
-      statTitles[0].textContent = t.active_players;
-      statTitles[1].textContent = t.top_player;
-      statTitles[2].textContent = t.most_viewed;
-    }
-
-    // -----------------------------
-    // MAIN HERO SECTION
-    // -----------------------------
-    setText('#about .hero-title.display-5', t.hero_title);
-    setText('#about .text-muted-custom.fst-italic', t.hero_text);
-    if (t.description) {
-      const desc = document.querySelector('#about .text-dark.lh-base');
-      if (desc) desc.textContent = t.description;
-    }
-
-    // -----------------------------
-    // CARDS (Games / Tournaments / Teams)
-    // -----------------------------
-    const cardTitles = document.querySelectorAll('.card-title');
-    if (cardTitles.length >= 3) {
-      cardTitles[0].textContent = t.popular_games;
-      cardTitles[1].textContent = t.tournaments;
-      cardTitles[2].textContent = t.pro_teams;
-    }
-
-    // Buttons in first card (games)
-    const gameCard = document.querySelector('#games');
-    if (gameCard) {
-      const gameButtons = gameCard.parentElement.querySelectorAll('.btn-group button');
-      if (gameButtons.length >= 2) {
-        if (t.view_rankings) gameButtons[0].textContent = t.view_rankings;
-        if (t.watch) gameButtons[1].textContent = t.watch;
-      }
-    }
-
-    // Button in tournaments card
-    const tournamentCard = document.querySelector('#tournaments');
-    if (tournamentCard) {
-      const viewBtn = tournamentCard.parentElement.querySelector('.btn-cyber-primary');
-      if (viewBtn && t.view_schedule) viewBtn.textContent = t.view_schedule;
-    }
-
-    // Buttons in last card (Teams)
-    const teamCard = document.querySelector('.card:last-of-type');
-    if (teamCard) {
-      const teamBtns = teamCard.querySelectorAll('.btn-group button');
-      if (teamBtns.length >= 2) {
-        if (t.teams_btn) teamBtns[0].textContent = t.teams_btn;
-        if (t.players_btn) teamBtns[1].textContent = t.players_btn;
-      }
-    }
-
-    // -----------------------------
-    // GALLERY
-    // -----------------------------
-    setText('#gallery h2', t.gallery_title);
-
-    // -----------------------------
-    // FOOTER
-    // -----------------------------
-    setText('footer p.text-muted', t.footer);
+// Apply translations to the page
+function applyTranslations(lang) {
+  if (!translations[lang]) {
+    console.error(`Language ${lang} not found`);
+    return;
   }
 
-  // ===== LOAD TRANSLATIONS =====
-  async function loadTranslations(lang) {
-    try {
-      const response = await fetch('assets/i18n/cybersport.json');
-      const data = await response.json();
-      applyTranslations(data[lang] || data['en']);
-    } catch (err) {
-      console.error('Error loading translations:', err);
+  const t = translations[lang];
+
+  // Navigation
+  const navBrand = document.querySelector('.navbar-brand span');
+  if (navBrand) navBrand.textContent = t.navBrand;
+  
+  const navLinks = document.querySelectorAll('.nav-link');
+  if (navLinks[0]) navLinks[0].textContent = t.navMain;
+  if (navLinks[1]) navLinks[1].textContent = t.navOlympics;
+  if (navLinks[2]) navLinks[2].textContent = t.navFormula1;
+
+  // Sidebar
+  const sidebarTitle = document.querySelector('.sidebar-section h3');
+  if (sidebarTitle) sidebarTitle.textContent = t.quickNav;
+  
+  const sidebarLinks = document.querySelectorAll('.sidebar-section a');
+  if (sidebarLinks[0]) sidebarLinks[0].textContent = t.aboutEsports;
+  if (sidebarLinks[1]) sidebarLinks[1].textContent = t.popularGames;
+  if (sidebarLinks[2]) sidebarLinks[2].textContent = t.tournaments;
+  if (sidebarLinks[3]) sidebarLinks[3].textContent = t.gamingGallery;
+
+  // Quick stats
+  const statTitles = document.querySelectorAll('.stat-title');
+  const statValues = document.querySelectorAll('.stat-value');
+  if (statTitles[0]) statTitles[0].textContent = t.activePlayers;
+  if (statValues[0]) statValues[0].textContent = t.activePlayersValue;
+  if (statTitles[1]) statTitles[1].textContent = t.topEarningPlayer;
+  if (statValues[1]) statValues[1].textContent = t.topEarningPlayerValue;
+  if (statTitles[2]) statTitles[2].textContent = t.mostViewedTournament;
+  if (statValues[2]) statValues[2].textContent = t.mostViewedTournamentValue;
+
+  // Hero section
+  const heroTitle = document.querySelector('#about h1');
+  const heroSubtitle = document.querySelector('#about .fst-italic');
+  const heroDescription = document.querySelector('#about .text-dark');
+  if (heroTitle) heroTitle.textContent = t.heroTitle;
+  if (heroSubtitle) heroSubtitle.textContent = t.heroSubtitle;
+  if (heroDescription) heroDescription.textContent = t.heroDescription;
+
+  // Three column cards
+  const cardTitles = document.querySelectorAll('.card-title.h5');
+  if (cardTitles[0]) cardTitles[0].textContent = t.mostPopularGames;
+  if (cardTitles[1]) cardTitles[1].textContent = t.majorTournaments;
+  if (cardTitles[2]) cardTitles[2].textContent = t.proTeams;
+
+  // Card buttons
+  const cardButtons = document.querySelectorAll('.card-footer .btn');
+  if (cardButtons[0]) cardButtons[0].textContent = t.viewRankings;
+  if (cardButtons[1]) cardButtons[1].textContent = t.watch;
+  if (cardButtons[2]) cardButtons[2].textContent = t.viewSchedule;
+  if (cardButtons[3]) cardButtons[3].textContent = t.teams;
+  if (cardButtons[4]) cardButtons[4].textContent = t.players;
+
+  // Pro teams description
+  const proTeamsDesc = document.querySelector('.card-text.text-muted-custom');
+  if (proTeamsDesc) proTeamsDesc.textContent = t.proTeamsDesc;
+
+  // Gallery section
+  const galleryTitle = document.querySelector('#gallery h2');
+  if (galleryTitle) galleryTitle.textContent = t.epicGamingMoments;
+  
+  const overlays = document.querySelectorAll('.img-overlay');
+  if (overlays[0]) overlays[0].textContent = t.gallery1;
+  if (overlays[1]) overlays[1].textContent = t.gallery2;
+  if (overlays[2]) overlays[2].textContent = t.gallery3;
+  if (overlays[3]) overlays[3].textContent = t.gallery4;
+  if (overlays[4]) overlays[4].textContent = t.gallery5;
+  if (overlays[5]) overlays[5].textContent = t.gallery6;
+  if (overlays[6]) overlays[6].textContent = t.gallery7;
+  if (overlays[7]) overlays[7].textContent = t.gallery8;
+  if (overlays[8]) overlays[8].textContent = t.gallery9;
+
+  // Save current language
+  currentLanguage = lang;
+  localStorage.setItem('selectedLanguage', lang);
+}
+
+// Change language function
+function changeLanguage(lang) {
+  applyTranslations(lang);
+  
+  // Update selector value
+  const selector = document.getElementById('language-selector');
+  if (selector) {
+    selector.value = lang;
+  }
+}
+
+// Initialize translations on page load
+async function initTranslations() {
+  const loaded = await loadTranslations();
+  
+  if (loaded) {
+    // Apply saved or default language
+    applyTranslations(currentLanguage);
+    
+    // Set selector to current language
+    const selector = document.getElementById('language-selector');
+    if (selector) {
+      selector.value = currentLanguage;
+      
+      // Add event listener
+      selector.addEventListener('change', function() {
+        changeLanguage(this.value);
+      });
     }
   }
+}
 
-  // Default language
-  loadTranslations('en');
-
-  // Change language when selected
-  langSelector.addEventListener('change', (e) => {
-    loadTranslations(e.target.value);
-  });
-});
+// Start when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initTranslations);
+} else {
+  initTranslations();
+}
 
 // Function to apply theme based on stored value
 function applyTheme(theme) {
@@ -238,4 +247,4 @@ if (typeof $ !== 'undefined') {
     setInterval(updateTime, 1000);
   }
 
-console.log('JavaScript loaded successfully!');
+console.log('JavaScript loaded successfully!')});
