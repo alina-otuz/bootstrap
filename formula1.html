@@ -99,8 +99,6 @@
           <p class="text-muted-custom fst-italic mb-3">F1 is the top class of international single-seater auto racing. Quick facts below.</p>
           <p class="text-dark lh-base">Formula 1, better known as F1, is the pinnacle of motorsport. It's the highest class of international open-wheel single-seater Formula auto racing. These words may seem complicated, but they're actually pretty simple. F1 is the highest level of racing with a single-seater car and the wheels outside the body of the car. Since F1 is the highest level of Formula auto racing it's called Formula 1; it's the highest level of motorsport. Junior levels of motorsport are things like Formula 2 and Formula 3, which are feeder series to F1.</p>
           
-          <!-- Sound Button -->
-          <button id="play-sound-btn" class="btn btn-f1-primary mt-3">🔊 Play Engine Sound</button>
         </section>
 
         <!-- Three Column Section -->
@@ -113,20 +111,100 @@
               <div class="card-body">
                 <h2 class="card-title h5 fw-bold">Top Drivers</h2>
                 <ul class="list-unstyled text-muted-custom mb-0">
-                  <li class="mb-1">🏆 Max Verstappen</li>
-                  <li class="mb-1">🏆 Lewis Hamilton</li>
-                  <li class="mb-1">🏆 Charles Leclerc</li>
+                  <div id="driversContainer" class="loading">Loading drivers...</div>
                 </ul>
               </div>
               <div class="card-footer bg-transparent border-0 pb-3">
                 <div class="btn-group w-100" role="group" aria-label="Driver actions">
-                  <button type="button" class="btn btn-outline-secondary btn-sm">View Stats</button>
-                  <button type="button" class="btn btn-f1-primary btn-sm">Follow</button>
+                  <a href="https://www.formula1.com/en/drivers" class="btn btn-f1-primary btn-sm" role="button">Explore</a>
                 </div>
               </div>
             </div>
           </article>
+<script>
+        async function fetchTopDrivers() {
+            const contentDiv = document.getElementById('content');
+            const sessionInfoDiv = document.getElementById('session-info');
 
+            try {
+                // Get the latest session
+                const sessionsResponse = await fetch('https://api.openf1.org/v1/sessions?session_name=Race&year=2023');
+                const sessions = await sessionsResponse.json();
+                
+                if (!sessions || sessions.length === 0) {
+                    throw new Error('No sessions found');
+                }
+
+                // Get the most recent race session
+                const latestSession = sessions.sort((a, b) => 
+                    new Date(b.date_start) - new Date(a.date_start)
+                )[0];
+
+                // Fetch drivers for that session
+                const driversResponse = await fetch(
+                    `https://api.openf1.org/v1/drivers?session_key=${latestSession.session_key}`
+                );
+                const drivers = await driversResponse.json();
+
+                // Get position data
+                const positionsResponse = await fetch(
+                    `https://api.openf1.org/v1/position?session_key=${latestSession.session_key}`
+                );
+                const positions = await positionsResponse.json();
+
+                // Get final positions (last entry for each driver)
+                const finalPositions = {};
+                positions.forEach(pos => {
+                    if (!finalPositions[pos.driver_number] || 
+                        new Date(pos.date) > new Date(finalPositions[pos.driver_number].date)) {
+                        finalPositions[pos.driver_number] = pos;
+                    }
+                });
+
+                // Sort drivers by position
+                const sortedDrivers = drivers
+                    .filter(d => finalPositions[d.driver_number])
+                    .map(d => ({
+                        ...d,
+                        position: finalPositions[d.driver_number].position
+                    }))
+                    .sort((a, b) => a.position - b.position)
+                    .slice(0, 3);
+
+                // Display drivers
+                displayDrivers(sortedDrivers);
+                
+                // Display session info
+                sessionInfoDiv.textContent = `${latestSession.meeting_official_name} - ${latestSession.session_name} (${new Date(latestSession.date_start).toLocaleDateString()})`;
+
+            } catch (error) {
+                contentDiv.innerHTML = `<div class="error">Error loading drivers: ${error.message}</div>`;
+                console.error('Error:', error);
+            }
+        }
+
+        function displayDrivers(drivers) {
+            const contentDiv = document.getElementById('content');
+            
+            const html = `
+                <div class="drivers-grid">
+                    ${drivers.map(driver => `
+                        <div class="driver-card">
+                            <div class="position">#${driver.position}</div>
+                            <div class="driver-name">${driver.full_name}</div>
+                            <div class="team-name">${driver.team_name}</div>
+                            <div class="driver-number">Number: ${driver.driver_number}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            contentDiv.innerHTML = html;
+        }
+
+        // Load drivers on page load
+        fetchTopDrivers();
+    </script>
           <!-- Race Calendar Card -->
           <article class="col-lg-4 col-md-6" id="calendar">
             <div class="card h-100 shadow-sm">
@@ -152,7 +230,6 @@
               <div class="card-footer bg-transparent border-0 pb-3">
                 <div class="btn-group w-100" role="group" aria-label="Highlight options">
                   <a href="https://www.youtube.com/playlist?list=PLfoNZDHitwjUleAqrgG-OC5gVAL2mv-Mh" class="btn btn-f1-primary btn-sm" role="button">Watch</a>
-                  <button type="button" class="btn btn-outline-secondary btn-sm">Share</button>
                 </div>
               </div>
             </div>
@@ -179,89 +256,47 @@
         </section>
 
         <!-- Carousel -->
-        <section id="gallery" class="mb-4 mb-lg-5 px-2 px-sm-3">
-          <h2 class="text-center fw-bold mb-4 mt-4 mt-lg-5">Historic F1 Moments</h2>
-          
-          <div id="f1Carousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
-            <div class="carousel-indicators">
-              <button type="button" data-bs-target="#f1Carousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-              <button type="button" data-bs-target="#f1Carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-              <button type="button" data-bs-target="#f1Carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-              <button type="button" data-bs-target="#f1Carousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
-              <button type="button" data-bs-target="#f1Carousel" data-bs-slide-to="4" aria-label="Slide 5"></button>
-              <button type="button" data-bs-target="#f1Carousel" data-bs-slide-to="5" aria-label="Slide 6"></button>
-              <button type="button" data-bs-target="#f1Carousel" data-bs-slide-to="6" aria-label="Slide 7"></button>
-              <button type="button" data-bs-target="#f1Carousel" data-bs-slide-to="7" aria-label="Slide 8"></button>
-              <button type="button" data-bs-target="#f1Carousel" data-bs-slide-to="8" aria-label="Slide 9"></button>
-            </div>
-            
-            <div class="carousel-inner rounded">
-              <div class="carousel-item active">
-                <img src="https://miro.medium.com/v2/resize:fit:1100/format:webp/1*qkOryCKht6pKZv6TDxx62w.jpeg" class="d-block w-100" alt="Sebastian Vettel celebrating at India 2013">
-                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded p-2">
-                  <h5>Sebastian Vettel — India 2013</h5>
-                </div>
-              </div>
-              <div class="carousel-item">
-                <img src="https://miro.medium.com/v2/resize:fit:1100/format:webp/1*jgHj_L-LwD84JPrUOHRk9g.jpeg" class="d-block w-100" alt="Charles Leclerc racing at Monza 2019">
-                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded p-2">
-                  <h5>Charles Leclerc — Monza 2019</h5>
-                </div>
-              </div>
-              <div class="carousel-item">
-                <img src="https://miro.medium.com/v2/resize:fit:1100/format:webp/1*r1Ck7lrdAPThMkCBbodSzA.jpeg" class="d-block w-100" alt="Michael Schumacher at Hockenheim 1995">
-                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded p-2">
-                  <h5>Michael Schumacher — Hockenheim 1995</h5>
-                </div>
-              </div>
-              <div class="carousel-item">
-                <img src="https://miro.medium.com/v2/resize:fit:1100/format:webp/1*ZVloaz9l_HC76op5BP1IcA.jpeg" class="d-block w-100" alt="Max Verstappen at Azerbaijan 2021">
-                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded p-2">
-                  <h5>Max Verstappen — Azerbaijan 2021</h5>
-                </div>
-              </div>
-              <div class="carousel-item">
-                <img src="https://miro.medium.com/v2/resize:fit:828/format:webp/1*XgtXlScmICNAI1WZfK1nzg.jpeg" class="d-block w-100" alt="Nigel Mansell and Ayrton Senna at Spain 1991">
-                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded p-2">
-                  <h5>Nigel Mansell & Ayrton Senna — Spain 1991</h5>
-                </div>
-              </div>
-              <div class="carousel-item">
-                <img src="https://miro.medium.com/v2/resize:fit:1100/format:webp/1*fic9aPDEjOr0sg9OyAkrtQ.jpeg" class="d-block w-100" alt="Nigel Mansell at Dallas 1984">
-                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded p-2">
-                  <h5>Nigel Mansell — Dallas 1984</h5>
-                </div>
-              </div>
-              <div class="carousel-item">
-                <img src="https://miro.medium.com/v2/resize:fit:1100/format:webp/1*WCNoMmckzs6ksQk4z4wH8g.jpeg" class="d-block w-100" alt="Jim Clark at Silverstone 1967">
-                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded p-2">
-                  <h5>Jim Clark — Silverstone 1967</h5>
-                </div>
-              </div>
-              <div class="carousel-item">
-                <img src="https://miro.medium.com/v2/resize:fit:1100/format:webp/1*ni88Iv2Lfc2U_qZC10W7Uw.jpeg" class="d-block w-100" alt="Stefan Johansson at Monaco 1985">
-                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded p-2">
-                  <h5>Stefan Johansson — Monaco 1985</h5>
-                </div>
-              </div>
-              <div class="carousel-item">
-                <img src="https://www.hola.com/us/horizon/original_aspect_ratio/b12fd8fcb3ed-gettyimages-88812049.jpg?im=Resize=(960),type=downsize" class="d-block w-100" alt="Giuseppe Farina at Silverstone 1950">
-                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded p-2">
-                  <h5>Giuseppe Farina — Silverstone 1950</h5>
-                </div>
-              </div>
-            </div>
-            
-            <button class="carousel-control-prev" type="button" data-bs-target="#f1Carousel" data-bs-slide="prev" aria-label="Previous slide">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#f1Carousel" data-bs-slide="next" aria-label="Next slide">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Next</span>
-            </button>
+        <section id="gallery">
+        <h2 style="margin-top: 40px;">Historic F1 Moments</h2>
+        <div class="gallery">
+          <div class="img-container">
+            <img src="https://miro.medium.com/v2/resize:fit:1100/format:webp/1*qkOryCKht6pKZv6TDxx62w.jpeg" class="gallery-img" alt="Sebastian Vettel India 2013">
+            <div class="img-overlay">Sebastian Vettel – India 2013</div>
           </div>
-        </section>
+          <div class="img-container">
+            <img src="https://miro.medium.com/v2/resize:fit:1100/format:webp/1*jgHj_L-LwD84JPrUOHRk9g.jpeg" class="gallery-img" alt="Charles Leclerc Monza 2019">
+            <div class="img-overlay">Charles Leclerc – Monza 2019</div>
+          </div>
+          <div class="img-container">
+            <img src="https://miro.medium.com/v2/resize:fit:1100/format:webp/1*r1Ck7lrdAPThMkCBbodSzA.jpeg" class="gallery-img" alt="Michael Schumacher Hockenheim 1995">
+            <div class="img-overlay">Michael Schumacher – Hockenheim 1995</div>
+          </div>
+          <div class="img-container">
+            <img src="https://miro.medium.com/v2/resize:fit:1100/format:webp/1*ZVloaz9l_HC76op5BP1IcA.jpeg" class="gallery-img" alt="Max Verstappen Azerbaijan 2021">
+            <div class="img-overlay">Max Verstappen – Azerbaijan 2021</div>
+          </div>
+          <div class="img-container">
+            <img src="https://miro.medium.com/v2/resize:fit:828/format:webp/1*XgtXlScmICNAI1WZfK1nzg.jpeg" class="gallery-img" alt="Nigel Mansell & Ayrton Senna Spain 1991">
+            <div class="img-overlay">Nigel Mansell & Ayrton Senna – Spain 1991</div>
+          </div>
+          <div class="img-container">
+            <img src="https://miro.medium.com/v2/resize:fit:1100/format:webp/1*fic9aPDEjOr0sg9OyAkrtQ.jpeg" class="gallery-img" alt="Nigel Mansell Dallas 1984">
+            <div class="img-overlay">Nigel Mansell – Dallas 1984</div>
+          </div>
+          <div class="img-container">
+            <img src="https://miro.medium.com/v2/resize:fit:1100/format:webp/1*WCNoMmckzs6ksQk4z4wH8g.jpeg" class="gallery-img" alt="Jim Clark Silverstone 1967">
+            <div class="img-overlay">Jim Clark – Silverstone 1967</div>
+          </div>
+          <div class="img-container">
+            <img src="https://miro.medium.com/v2/resize:fit:1100/format:webp/1*ni88Iv2Lfc2U_qZC10W7Uw.jpeg" class="gallery-img" alt="Stefan Johansson Monaco 1985">
+            <div class="img-overlay">Stefan Johansson – Monaco 1985</div>
+          </div>
+          <div class="img-container">
+            <img src="https://www.hola.com/us/horizon/original_aspect_ratio/b12fd8fcb3ed-gettyimages-88812049.jpg?im=Resize=(960),type=downsize" class="gallery-img" alt="Giuseppe Farina Silverstone 1950">
+            <div class="img-overlay">Giuseppe Farina – Silverstone 1950</div>
+          </div>
+        </div>
+      </section>
 
       </main>
     </div>
@@ -281,16 +316,11 @@ But, as expected, teams take advantage of a helpful loophole when it comes to ri
 </section>
 
   <!-- Footer -->
-  <footer class="py-4 mt-5">
-    <div class="container-fluid">
-      <div class="row text-center">
-        <div class="col-12">
-          <p class="mb-0 text-muted">Alina Otuzbayeva | Zhanel Shunshalinova</p>
+  <footer class="text-center py-3 bg-light border-top">
+    <p class="mb-0 text-muted">Alina Otuzbayeva  | Zhanel Shunshalinova </p>
     <p id="datetime" class="text-secondary"></p>
-        </div>
-      </div>
-    </div>
   </footer>
+  
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="f1.js"></script>
 </body>

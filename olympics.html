@@ -1,32 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sport World — Olympics</title>
-
-  <!-- Bootstrap -->
+  <meta charset="UTF-8">
+  <title>Sport World – Olympics</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Styles -->
-  <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="olympics.css">
 </head>
 <body>
-  <!-- === Scroll Progress Bar === -->
+
+  <!-- SCROLL BAR -->
   <div id="scrollBar"></div>
 
-  <!-- === Navbar === -->
+  <!-- NAVBAR -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-      <a class="navbar-brand fw-bold text-danger" href="index.html">Sport World</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="index.html">
+        <img src="logo.png" alt="Logo" width="40" class="me-2">
+        Sport World
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navMenu">
+      <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-          <li class="nav-item"><a class="nav-link active" href="olympics.html">Olympics</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html">Main page</a></li>
           <li class="nav-item"><a class="nav-link" href="cybersport.html">Cybersport</a></li>
           <li class="nav-item"><a class="nav-link" href="formula1.html">Formula 1</a></li>
         </ul>
@@ -34,115 +31,181 @@
     </div>
   </nav>
 
-  <!-- === HERO === -->
-  <section class="hero">
-    <div class="hero-overlay">
-      <h1>Olympic Games</h1>
-    </div>
-  </section>
+  <!-- КОНТЕНТ -->
+  <div class="container-fluid my-5">
+    <div class="row">
 
-  <!-- === MEDAL COUNTERS === -->
-  <section class="container my-5">
-    <h2 class="text-danger mb-3">Top Medal Countries 🏅</h2>
-    <div class="row text-center">
-      <div class="col-md-3">
-        <div class="card p-3 shadow-sm">
-          <h5>🇺🇸 USA</h5>
-          <p class="counter display-6" data-target="126">0</p>
-          <p>Total Medals</p>
+      <!-- SIDEBAR -->
+      <aside class="col-lg-3 mb-4 sticky-top" style="top: 20px;">
+        <div class="p-3 bg-light rounded shadow-sm">
+          <h4 class="text-danger mb-3">Navigation</h4>
+          <ul class="list-unstyled">
+            <li><a href="#medals" class="text-dark text-decoration-none d-block py-1">Medals</a></li>
+            <li><a href="#gallery" class="text-dark text-decoration-none d-block py-1">Gallery</a></li>
+            <li><a href="#about" class="text-dark text-decoration-none d-block py-1">About</a></li>
+            <li><a href="#history" class="text-dark text-decoration-none d-block py-1">History</a></li>
+            <li><a href="#fun" class="text-dark text-decoration-none d-block py-1">Fun Moments</a></li>
+            <li><a href="#faq" class="text-dark text-decoration-none d-block py-1">FAQ</a></li>
+            <li><a href="#contact" class="text-dark text-decoration-none d-block py-1">Contact</a></li>
+          </ul>
+
+          <div class="quick-stats mt-4">
+            <h5 class="text-dark">Next Olympics</h5>
+            <p class="text-danger">Milano Cortina 2026</p>
+            <small class="text-muted">Feb 6 – 22, 2026</small>
+          </div>
+          <div class="quick-stats">
+            <h5 class="text-dark">Most Medals</h5>
+            <p class="text-danger">USA – Summer</p>
+            <p class="text-danger">Norway – Winter</p>
+          </div>
+          <div class="quick-stats">
+            <h5 class="text-dark">Motto</h5>
+            <p class="text-danger"><em>Citius, Altius, Fortius – Communiter</em></p>
+          </div>
         </div>
-      </div>
-      <div class="col-md-3">
-        <div class="card p-3 shadow-sm">
-          <h5>🇨🇳 China</h5>
-          <p class="counter display-6" data-target="88">0</p>
-          <p>Total Medals</p>
+      </aside>
+
+      <!-- MAIN -->
+      <main class="col-lg-9">
+
+        <!-- MEDAL COUNTERS -->
+        <section id="medals" class="container my-5">
+          <h2 class="text-center text-danger mb-4">Top Medal Countries</h2>
+          <div class="row text-center g-4">
+            <div class="col-md-3">
+              <div class="card p-4 shadow-sm border-0">
+                <h5 class="text-dark">USA</h5>
+                <p class="counter display-5 fw-bold text-danger" data-target="126">0</p>
+                <small class="text-muted">Total Medals</small>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card p-4 shadow-sm border-0">
+                <h5 class="text-dark">China</h5>
+                <p class="counter display-5 fw-bold text-danger" data-target="88">0</p>
+                <small class="text-muted">Total Medals</small>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card p-4 shadow-sm border-0">
+                <h5 class="text-dark">Japan</h5>
+                <p class="counter display-5 fw-bold text-danger" data-target="65">0</p>
+                <small class="text-muted">Total Medals</small>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card p-4 shadow-sm border-0">
+                <h5 class="text-dark">France</h5>
+                <p class="counter display-5 fw-bold text-danger" data-target="52">0</p>
+                <small class="text-muted">Total Medals</small>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- GALLERY -->
+        <section id="gallery" class="mb-5 text-center">
+          <h2 class="text-center text-danger mb-4">Olympic Gallery</h2>
+          <div class="container">
+            <div class="carousel-wrapper mx-auto">
+              <div id="olympicCarousel" class="carousel slide mx-auto" style="max-width: 800px;" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                  <div class="carousel-item active">
+                    <img data-src="https://russian.news.cn/world/2016-08/14/135596611_14711737947251n.jpg" class="d-block w-100 lazy" alt="Opening">
+                  </div>
+                  <div class="carousel-item">
+                    <img data-src="https://olympic.kz/images/1761751587.JPG" class="d-block w-100 lazy" alt="Swimming">
+                  </div>
+                  <div class="carousel-item">
+                    <img data-src="https://sport.insure/upload/iblock/c4a/c4a6b7c1163886edc6ebbcbce68ce1d7.jpg" class="d-block w-100 lazy" alt="Track">
+                  </div>
+                  <div class="carousel-item">
+                    <img data-src="https://upload.wikimedia.org/wikipedia/commons/8/89/Miller_Bode_2008_002.jpg" class="d-block w-100 lazy" alt="Winter">
+                  </div>
+                  <div class="carousel-item">
+                    <img data-src="https://ru.sport-wiki.org/wp-content/themes/sportwiki/img/odinichnoe-figurnoe-katanie.jpg" class="d-block w-100 lazy" alt="Figure Skating">
+                  </div>
+                  <div class="carousel-item">
+                    <img data-src="https://s-cdn.sportbox.ru/images/styles/800_800_auto/fp_fotos/0d/e4/db1b2452853ff42e480aba8328fe808c5bfd7baf6d0a2961976628.jpg" class="d-block w-100 lazy" alt="Gymnastics">
+                  </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#olympicCarousel" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#olympicCarousel" data-bs-slide="next">
+                  <span class="carousel-control-next-icon"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ABOUT, HISTORY, FUN -->
+        <section id="about" class="p-4 bg-light rounded shadow-sm mb-4">
+          <h2 class="text-danger">About Olympic Games</h2>
+          <p>The Olympic Games are the most prestigious sporting event in the world, bringing together athletes from every continent.</p>
+        </section>
+
+        <section id="history" class="p-4 bg-light rounded shadow-sm mb-4">
+          <h2 class="text-danger">History</h2>
+          <p>The ancient Olympic Games began in 776 BC in Olympia, Greece. The modern Olympics were revived in 1896 in Athens by Pierre de Coubertin.</p>
+        </section>
+
+        <section id="fun" class="p-4 bg-light rounded shadow-sm mb-4">
+          <h2 class="text-danger">Fun Moments</h2>
+          <p>The Olympics have produced countless memorable moments — from record-breaking performances to inspiring stories of resilience.</p>
+        </section>
+
+        <!-- FAQ -->
+        <section id="faq" class="p-4 bg-light rounded shadow-sm mb-5">
+          <h2 class="text-danger mb-3">FAQ</h2>
+          <div class="faq-item">
+            <div class="question">Where are the next Olympic Games?</div>
+            <p class="answer">In 2026, the Winter Olympics will be held in Milano-Cortina, Italy.</p>
+          </div>
+          <div class="faq-item">
+            <div class="question">Who founded the modern Olympics?</div>
+            <p class="answer">Pierre de Coubertin founded the modern Olympic Games in 1896.</p>
+          </div>
+          <div class="faq-item">
+            <div class="question">How often are the Olympics held?</div>
+            <p class="answer">Every four years, alternating between Summer and Winter Games.</p>
+          </div>
+        </section>
+
+        <!-- CONTACT BUTTON -->
+        <div class="text-center mb-5">
+          <button id="openPopup" class="btn btn-danger">Contact Us</button>
         </div>
-      </div>
-      <div class="col-md-3">
-        <div class="card p-3 shadow-sm">
-          <h5>🇯🇵 Japan</h5>
-          <p class="counter display-6" data-target="65">0</p>
-          <p>Total Medals</p>
+
+        <!-- POPUP -->
+        <div id="popup" class="popup">
+          <div class="popup-content">
+            <span id="closePopup" class="close">×</span>
+            <h4>Contact Form</h4>
+            <form id="contactForm">
+              <input type="text" id="contactName" placeholder="Your name" class="form-control mb-2">
+              <input type="email" id="contactEmail" placeholder="Your email" class="form-control mb-2">
+              <textarea id="contactMessage" placeholder="Your message" class="form-control mb-2"></textarea>
+              <button type="submit" class="btn btn-danger w-100">Send</button>
+            </form>
+          </div>
         </div>
-      </div>
-      <div class="col-md-3">
-        <div class="card p-3 shadow-sm">
-          <h5>🇫🇷 France</h5>
-          <p class="counter display-6" data-target="52">0</p>
-          <p>Total Medals</p>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- === GALLERY === -->
-  <section class="container my-5">
-    <h2 class="text-danger mb-4">Olympic Highlights 📸</h2>
-    <div class="row g-3">
-      <div class="col-md-4">
-        <img class="img-fluid rounded shadow lazy"
-             data-src="https://ss.sport-express.net/userfiles/materials/169/1699820/full.jpg"
-             alt="Olympic swimming start moment">
-      </div>
-      <div class="col-md-4">
-        <img class="img-fluid rounded shadow lazy"
-             data-src="https://cdn.iz.ru/sites/default/files/styles/900x506/public/news-2021-08/2021-08-03T042741Z_1150516895_RC2GXO9Y8NII_RTRMADP_3_OLYMPICS-2020-ATH-M-400MHURD-FNL.jpeg.jpg?itok=DssX4HoI"
-             alt="Olympic hurdles final">
-      </div>
-      <div class="col-md-4">
-        <img class="img-fluid rounded shadow lazy"
-             data-src="https://img.olympics.com/images/image/private//t_s_w1460/f_auto/v1731527359/primary/fwkb2oymbh998jfmsu4u"
-             alt="Official Olympic image">
-      </div>
-    </div>
-  </section>
-
-  <!-- === FAQ === -->
-  <section class="container my-5">
-    <h2 class="text-danger mb-4">FAQ</h2>
-
-    <div class="faq-item">
-      <p class="question">What is the origin of the Olympic Games?</p>
-      <p class="answer">The ancient Olympic Games began in Olympia, Greece, in 776 BC to honor Zeus.</p>
-    </div>
-
-    <div class="faq-item">
-      <p class="question">When were the modern Olympics revived?</p>
-      <p class="answer">They were revived in 1896 in Athens, Greece, thanks to Pierre de Coubertin.</p>
-    </div>
-
-    <div class="faq-item">
-      <p class="question">Which country hosted the most Olympic Games?</p>
-      <p class="answer">The United States has hosted the Olympics 8 times.</p>
-    </div>
-  </section>
-
-  <!-- === POPUP FORM === -->
-  <button id="openPopup" class="btn btn-danger mx-auto d-block mb-5">Contact Us</button>
-
-  <div id="popup" class="popup">
-    <div class="popup-content">
-      <span id="closePopup" class="close">&times;</span>
-      <h4 class="text-danger mb-3">Get in Touch</h4>
-      <form id="contactForm">
-        <input type="text" id="contactName" class="form-control mb-2" placeholder="Your Name">
-        <input type="email" id="contactEmail" class="form-control mb-2" placeholder="Your Email">
-        <textarea id="contactMsg" class="form-control mb-3" rows="3" placeholder="Message..."></textarea>
-        <button type="submit" class="btn btn-success w-100">Send</button>
-      </form>
+      </main>
     </div>
   </div>
 
-  <!-- === FOOTER === -->
-  <footer>
-    <p>© 2025 Sport World | <span id="datetime"></span></p>
-    <button id="changeBg" class="btn btn-outline-danger btn-sm mt-2">Toggle Theme</button>
+  <!-- FOOTER -->
+  <footer class="text-center py-3 bg-light border-top">
+    <p class="mb-0 text-muted">Alina Otuzbayeva  | Zhanel Shunshalinova </p>
+    <p id="datetime" class="text-secondary"></p>
   </footer>
 
-  <!-- === Scripts === -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <!-- JS -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="script1.js"></script>
+  <script src="olympics.js"></script>
 </body>
 </html>

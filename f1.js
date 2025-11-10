@@ -530,7 +530,23 @@ if (typeof $ !== 'undefined') {
     setInterval(updateTime, 1000);
   });
 }
+// ===== Переключатель день/ночь (Dynamic Style Changes) =====
+const themeToggle = document.createElement('button');
+themeToggle.textContent = '🌞 / 🌙';
+themeToggle.id = 'themeToggle';
+Object.assign(themeToggle.style, {
+  position: 'fixed', bottom: '20px', right: '20px',
+  padding: '10px 14px', border: 'none', borderRadius: '50%',
+  fontSize: '20px', cursor: 'pointer',
+  background: '#d62828', color: 'white', transition: 'all 0.6s ease'
+});
+document.body.appendChild(themeToggle);
 
+themeToggle.addEventListener('click', () => {
+  document.body.classList.toggle('dark-mode');
+  themeToggle.style.transform = 'rotate(360deg)';
+  setTimeout(() => (themeToggle.style.transform = ''), 600);
+});
 console.log('F1 JavaScript loaded successfully!');
 console.log('Championship Teams:', championshipTeams);
 console.log('Total Championships:', totalChampionships);

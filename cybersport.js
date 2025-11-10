@@ -135,48 +135,23 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+// ===== Переключатель день/ночь (Dynamic Style Changes) =====
+const themeToggle = document.createElement('button');
+themeToggle.textContent = '🌞 / 🌙';
+themeToggle.id = 'themeToggle';
+Object.assign(themeToggle.style, {
+  position: 'fixed', bottom: '20px', right: '20px',
+  padding: '10px 14px', border: 'none', borderRadius: '50%',
+  fontSize: '20px', cursor: 'pointer',
+  background: '#d62828', color: 'white', transition: 'all 0.6s ease'
+});
+document.body.appendChild(themeToggle);
 
-// ============================================
-// SOUND EFFECTS
-// ============================================
-
-const soundButton = document.querySelector('#play-sound-btn');
-if (soundButton) {
-  soundButton.addEventListener('click', () => {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
-    
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-    
-    oscillator.type = 'sawtooth';
-    oscillator.frequency.setValueAtTime(100, audioContext.currentTime);
-    oscillator.frequency.exponentialRampToValueAtTime(800, audioContext.currentTime + 0.5);
-    
-    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-    
-    oscillator.start(audioContext.currentTime);
-    oscillator.stop(audioContext.currentTime + 0.5);
-    
-    const originalText = soundButton.textContent;
-    soundButton.textContent = '🏎️ Vroom!';
-    setTimeout(() => {
-      soundButton.textContent = originalText;
-    }, 1000);
-  });
-}
-
-// ============================================
-// HIGHER-ORDER FUNCTIONS
-// ============================================
-
-const filterTeams = (teams, filterFn) => teams.filter(filterFn);
-const championshipTeams = filterTeams(f1Teams, team => team.championships > 0);
-
-const mapTeams = (teams, mapFn) => teams.map(mapFn);
-const teamNames = mapTeams(f1Teams, team => team.name);
+themeToggle.addEventListener('click', () => {
+  document.body.classList.toggle('dark-mode');
+  themeToggle.style.transform = 'rotate(360deg)';
+  setTimeout(() => (themeToggle.style.transform = ''), 600);
+});
 
 // Apply hover effects to cards
 const applyStylesToElements = (selector, styleFunction) => {
@@ -225,65 +200,6 @@ if (typeof $ !== 'undefined') {
     $("#scrollBar").css("width", scrollPercent + "%");
   });
 
-  $(document).ready(function() {
-    // Copy to clipboard functionality
-    $('.content').each(function() {
-      const content = $(this);
-      const copyBtn = $('<button class="copy-btn btn btn-sm btn-outline-secondary mt-2">📋 Copy</button>');
-      content.append(copyBtn);
-      
-      copyBtn.on('click', function(e) {
-        e.stopPropagation();
-        const textToCopy = content.clone().find('.copy-btn').remove().end().text().trim();
-        
-        const $temp = $('<textarea>');
-        $('body').append($temp);
-        $temp.val(textToCopy).select();
-        document.execCommand('copy');
-        $temp.remove();
-        
-        copyBtn.html('✓ Copied!').removeClass('btn-outline-secondary').addClass('btn-success');
-        
-        setTimeout(function() {
-          copyBtn.html('📋 Copy').removeClass('btn-success').addClass('btn-outline-secondary');
-        }, 2000);
-      });
-    });
-
-    // Lazy loading images
-    $('.carousel-item img').each(function() {
-      const $img = $(this);
-      const actualSrc = $img.attr('src');
-      
-      $img.attr('data-src', actualSrc);
-      $img.attr('src', 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="500"%3E%3Crect width="800" height="500" fill="%23f4f7fb"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="24" fill="%2355677a"%3ELoading...%3C/text%3E%3C/svg%3E');
-      $img.addClass('lazy-load');
-    });
-    
-    function lazyLoadImages() {
-      $('.lazy-load').each(function() {
-        const $img = $(this);
-        const imgTop = $img.offset().top;
-        const imgBottom = imgTop + $img.height();
-        const viewportTop = $(window).scrollTop();
-        const viewportBottom = viewportTop + $(window).height();
-        
-        if (imgBottom > viewportTop - 200 && imgTop < viewportBottom + 200) {
-          const actualSrc = $img.attr('data-src');
-          if (actualSrc && $img.attr('src') !== actualSrc) {
-            $img.attr('src', actualSrc);
-            $img.removeClass('lazy-load');
-          }
-        }
-      });
-    }
-    
-    $(window).on('scroll', lazyLoadImages);
-    $('#f1Carousel').on('slide.bs.carousel', function() {
-      setTimeout(lazyLoadImages, 100);
-    });
-    lazyLoadImages();
-
      // Real-time clock
     function updateTime() {
       const now = new Date();
@@ -291,7 +207,6 @@ if (typeof $ !== 'undefined') {
     }
     updateTime();
     setInterval(updateTime, 1000);
-  });
-}
+  };
 
-console.log('F1 JavaScript loaded successfully!');
+console.log('JavaScript loaded successfully!');
